@@ -1,8 +1,9 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:booze_flutter/responsive/responsive.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({ Key? key }) : super(key: key);
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -11,18 +12,22 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-       return Scaffold(
-      backgroundColor: const Color(0xFFf5f5f5),
-      body: ListView(
-        padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width / 8),
-        children: const [
-           Menu(),
-          // MediaQuery.of(context).size.width >= 980
-          //     ? Menu()
-          //     : SizedBox(), // Responsive
-          Body()
-        ],
+    return Responsive(
+      tablet: Container(),
+      mobile: Container(),
+      desktop: Scaffold(
+        backgroundColor: const Color(0xFFf5f5f5),
+        body: ListView(
+          padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width / 8),
+          children: const [
+            Menu(),
+            // MediaQuery.of(context).size.width >= 980
+            //     ? Menu()
+            //     : SizedBox(), // Responsive
+            Body()
+          ],
+        ),
       ),
     );
   }
@@ -77,7 +82,8 @@ class Menu extends StatelessWidget {
             ),
             isActive
                 ? Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
                     decoration: BoxDecoration(
                       color: Colors.deepPurple,
                       borderRadius: BorderRadius.circular(30),
@@ -140,7 +146,7 @@ class Body extends StatelessWidget {
               ),
               const Text(
                 "If you don't have an account",
-                style:  TextStyle(
+                style: TextStyle(
                     color: Colors.black54, fontWeight: FontWeight.bold),
               ),
               const SizedBox(
@@ -150,18 +156,18 @@ class Body extends StatelessWidget {
                 children: [
                   const Text(
                     "You can",
-                    style:  TextStyle(
+                    style: TextStyle(
                         color: Colors.black54, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
                       print(MediaQuery.of(context).size.width);
-                      context.navigateNamedTo('/register-page');  
+                      context.navigateNamedTo('/register-page');
                     },
                     child: const Text(
                       "Register here!",
-                      style:  TextStyle(
+                      style: TextStyle(
                           color: Colors.deepPurple,
                           fontWeight: FontWeight.bold),
                     ),
@@ -279,7 +285,7 @@ class Body extends StatelessWidget {
           ),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
-            child:  Text("Or continue with"),
+            child: Text("Or continue with"),
           ),
           Expanded(
             child: Divider(
