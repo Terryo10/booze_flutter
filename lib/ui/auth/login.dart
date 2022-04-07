@@ -12,22 +12,18 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    return Responsive(
-      tablet: Container(),
-      mobile: Container(),
-      desktop: Scaffold(
-        backgroundColor: const Color(0xFFf5f5f5),
-        body: ListView(
-          padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width / 8),
-          children: const [
-            Menu(),
-            // MediaQuery.of(context).size.width >= 980
-            //     ? Menu()
-            //     : SizedBox(), // Responsive
-            Body()
-          ],
-        ),
+    return Scaffold(
+      backgroundColor: const Color(0xFFf5f5f5),
+      body: ListView(
+        padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width / 8),
+        children: const [
+          Menu(),
+          // MediaQuery.of(context).size.width >= 980
+          //     ? Menu()
+          //     : SizedBox(), // Responsive
+          Body()
+        ],
       ),
     );
   }
@@ -38,29 +34,33 @@ class Menu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 30),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              _menuItem(title: 'Home'),
-              _menuItem(title: 'About us'),
-              _menuItem(title: 'Contact us'),
-              _menuItem(title: 'Help'),
-            ],
-          ),
-          Row(
-            children: [
-              _menuItem(title: 'Sign In', isActive: true),
-              _registerButton()
-            ],
-          ),
-        ],
-      ),
-    );
+    return Responsive.isMobile(context)
+        ? Container()
+        : Responsive.isTablet(context)
+            ? Container()
+            : Padding(
+                padding: const EdgeInsets.symmetric(vertical: 30),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        _menuItem(title: 'Home'),
+                        _menuItem(title: 'About us'),
+                        _menuItem(title: 'Contact us'),
+                        _menuItem(title: 'Help'),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        _menuItem(title: 'Sign In', isActive: true),
+                        _registerButton()
+                      ],
+                    ),
+                  ],
+                ),
+              );
   }
 
   Widget _menuItem({String title = 'Title Menu', isActive = false}) {
@@ -129,75 +129,81 @@ class Body extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        SizedBox(
-          width: 360,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Sign In to \n Booze',
-                style: TextStyle(
-                  fontSize: 45,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              const Text(
-                "If you don't have an account",
-                style: TextStyle(
-                    color: Colors.black54, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  const Text(
-                    "You can",
-                    style: TextStyle(
-                        color: Colors.black54, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(width: 15),
-                  GestureDetector(
-                    onTap: () {
-                      print(MediaQuery.of(context).size.width);
-                      context.navigateNamedTo('/register-page');
-                    },
-                    child: const Text(
-                      "Register here!",
-                      style: TextStyle(
-                          color: Colors.deepPurple,
-                          fontWeight: FontWeight.bold),
+        Responsive.isMobile(context)
+            ? Container()
+            : Responsive.isTablet(context)
+                ? Container()
+                : Expanded(
+                    flex: 2,
+                    child: SizedBox(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Sign In to \n Booze',
+                            style: TextStyle(
+                              fontSize: 45,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          const Text(
+                            "If you don't have an account",
+                            style: TextStyle(
+                                color: Colors.black54,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              const Text(
+                                "You can",
+                                style: TextStyle(
+                                    color: Colors.black54,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(width: 15),
+                              GestureDetector(
+                                onTap: () {
+                                  context.navigateNamedTo('/register-page');
+                                },
+                                child: const Text(
+                                  "Register here!",
+                                  style: TextStyle(
+                                      color: Colors.deepPurple,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Image.asset(
+                            'images/illustration-2.png',
+                            // width: 300,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ],
+        Responsive.isMobile(context)
+            ? Container()
+            : Expanded(
+                flex: 2,
+                child: Image.asset(
+                  'images/illustration-1.png',
+                ),
               ),
-              Image.asset(
-                'images/illustration-2.png',
-                width: 300,
-              ),
-            ],
-          ),
-        ),
-
-        Image.asset(
-          'images/illustration-1.png',
-          width: 300,
-        ),
-        // MediaQuery.of(context).size.width >= 1300 //Responsive
-        //     ? Image.asset(
-        //         'images/illustration-1.png',
-        //         width: 300,
-        //       )
-        //     : SizedBox(),
-        Padding(
-          padding: EdgeInsets.symmetric(
-              vertical: MediaQuery.of(context).size.height / 6),
-          child: SizedBox(
-            width: 320,
-            child: _formLogin(),
+        Expanded(
+          flex: 3,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+                vertical: MediaQuery.of(context).size.height / 6),
+            child: SizedBox(
+              child: _formLogin(),
+            ),
           ),
         )
       ],
@@ -265,7 +271,7 @@ class Body extends StatelessWidget {
                 width: double.infinity,
                 height: 50,
                 child: Center(child: Text("Sign In"))),
-            onPressed: () => print("it's pressed"),
+            onPressed: (){},
             style: ElevatedButton.styleFrom(
               primary: Colors.deepPurple,
               onPrimary: Colors.white,
@@ -285,7 +291,7 @@ class Body extends StatelessWidget {
           ),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Text("Or continue with"),
+            child: FittedBox(child: Text("Or continue with")),
           ),
           Expanded(
             child: Divider(
@@ -298,9 +304,14 @@ class Body extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _loginWithButton(image: 'images/google.png'),
-            _loginWithButton(image: 'images/github.png', isActive: true),
-            _loginWithButton(image: 'images/facebook.png'),
+            Expanded(
+                flex: 1, child: _loginWithButton(image: 'images/google.png')),
+            Expanded(
+                flex: 1,
+                child: _loginWithButton(
+                    image: 'images/github.png', isActive: true)),
+            Expanded(
+                flex: 1, child: _loginWithButton(image: 'images/facebook.png')),
           ],
         ),
       ],

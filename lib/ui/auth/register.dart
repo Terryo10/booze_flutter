@@ -156,7 +156,7 @@ class Body extends StatelessWidget {
                   const SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
-                      print(MediaQuery.of(context).size.width);
+                      // print(MediaQuery.of(context).size.width);
                       context.navigateNamedTo('/login-page'); 
                     },
                     child: const Text(
@@ -189,7 +189,7 @@ class Body extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(
               vertical: MediaQuery.of(context).size.height / 6),
-          child: Container(
+          child: SizedBox(
             width: 320,
             child: _formLogin(),
           ),
@@ -300,7 +300,7 @@ class Body extends StatelessWidget {
                 width: double.infinity,
                 height: 50,
                 child: Center(child: Text("Sign In"))),
-            onPressed: () => print("it's pressed"),
+            onPressed: (){},
             style: ElevatedButton.styleFrom(
               primary: Colors.deepPurple,
               onPrimary: Colors.white,
