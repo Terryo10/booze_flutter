@@ -9,7 +9,6 @@ import '../ui/auth/register.dart';
     AutoRoute(page: LandingPage, initial: true),
     AutoRoute(page: LoginPage),
     AutoRoute(page: RegisterPage),
-
   ],
 )
 class $AppRouter {}
