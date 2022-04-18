@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class Banner extends StatefulWidget {
-  const Banner({ Key? key }) : super(key: key);
+class BannerPage extends StatefulWidget {
+  const BannerPage({ Key? key }) : super(key: key);
 
   @override
-  State<Banner> createState() => _BannerState();
+  State<BannerPage> createState() => _BannerState();
 }
 
-class _BannerState extends State<Banner> {
+class _BannerState extends State<BannerPage> {
   @override
   Widget build(BuildContext context) {
     return Container(

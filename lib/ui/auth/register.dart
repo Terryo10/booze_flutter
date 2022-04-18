@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../components/header.dart';
+
 class RegisterPage extends StatefulWidget {
   const RegisterPage({ Key? key }) : super(key: key);
 
@@ -14,16 +16,15 @@ class _RegisterPageState extends State<RegisterPage> {
        return Scaffold(
       backgroundColor: const Color(0xFFf5f5f5),
       body: ListView(
-        padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width / 8),
-        children: const [
-           Menu(),
-          // MediaQuery.of(context).size.width >= 980
-          //     ? Menu()
-          //     : SizedBox(), // Responsive
-          Body()
+        children:[
+        const Header(),
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width / 8),
+            child: const Body(),)
         ],
       ),
+      
     );
   }
 }

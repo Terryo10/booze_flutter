@@ -5,6 +5,4 @@ GetIt locator = GetIt.instance;
 
 void setupLocator() {
 locator.registerSingleton<AuthService>(AuthService());
-
-  
 }

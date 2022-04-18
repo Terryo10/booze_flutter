@@ -1,19 +1,29 @@
 import 'package:booze_flutter/locator.dart';
 import 'package:booze_flutter/routes/router.gr.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+import 'app_blocs/app_blocs.dart';
 
 void main() {
   setupLocator();
   final _appRouter = AppRouter();
-  runApp( MyApp(appRouter: _appRouter,));
+  FlutterSecureStorage storage = const FlutterSecureStorage();
+  runApp(MyApp(
+    appRouter: _appRouter,
+    storage: storage,
+  ));
 }
 
 class MyApp extends StatelessWidget {
   final AppRouter appRouter;
-  const MyApp({Key? key, required this.appRouter}) : super(key: key);
+  final FlutterSecureStorage storage;
+  const MyApp({Key? key, required this.appRouter, required this.storage})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    var app = MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Booze',
       theme: ThemeData(
@@ -21,6 +31,11 @@ class MyApp extends StatelessWidget {
       ),
       routerDelegate: appRouter.delegate(),
       routeInformationParser: appRouter.defaultRouteParser(),
+    );
+
+    return AppBlocs(
+      app: app,
+      storage: storage,
     );
   }
 }

@@ -1,6 +1,13 @@
+import 'dart:developer';
+
 import 'package:auto_route/auto_route.dart';
+import 'package:booze_flutter/bloc/auth/auth_bloc.dart';
 import 'package:booze_flutter/responsive/responsive.dart';
+import 'package:booze_flutter/ui/auth/helpers/validator.dart';
+import 'package:booze_flutter/ui/components/header.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -15,114 +22,32 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: const Color(0xFFf5f5f5),
       body: ListView(
-        padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width / 8),
-        children: const [
-          Menu(),
-          // MediaQuery.of(context).size.width >= 980
-          //     ? Menu()
-          //     : SizedBox(), // Responsive
-          Body()
+        children: [
+          const Header(),
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width / 8),
+            child: const Body(),
+          )
         ],
       ),
     );
   }
 }
 
-class Menu extends StatelessWidget {
-  const Menu({Key? key}) : super(key: key);
+class Body extends StatefulWidget {
+  const Body({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Responsive.isMobile(context)
-        ? Container()
-        : Responsive.isTablet(context)
-            ? Container()
-            : Padding(
-                padding: const EdgeInsets.symmetric(vertical: 30),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        _menuItem(title: 'Home'),
-                        _menuItem(title: 'About us'),
-                        _menuItem(title: 'Contact us'),
-                        _menuItem(title: 'Help'),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        _menuItem(title: 'Sign In', isActive: true),
-                        _registerButton()
-                      ],
-                    ),
-                  ],
-                ),
-              );
-  }
-
-  Widget _menuItem({String title = 'Title Menu', isActive = false}) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 75),
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: Column(
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: isActive ? Colors.deepPurple : Colors.grey,
-              ),
-            ),
-            const SizedBox(
-              height: 6,
-            ),
-            isActive
-                ? Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: Colors.deepPurple,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  )
-                : const SizedBox()
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _registerButton() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.shade200,
-            spreadRadius: 10,
-            blurRadius: 12,
-          ),
-        ],
-      ),
-      child: const Text(
-        'Register',
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Colors.black54,
-        ),
-      ),
-    );
-  }
+  State<Body> createState() => _BodyState();
 }
 
-class Body extends StatelessWidget {
-  const Body({Key? key}) : super(key: key);
+class _BodyState extends State<Body> {
+  final TextEditingController _emailController = TextEditingController();
+
+  final TextEditingController _passwordController = TextEditingController();
+
+  Validator validator = Validator();
 
   @override
   Widget build(BuildContext context) {
@@ -214,7 +139,17 @@ class Body extends StatelessWidget {
     return Column(
       children: [
         TextField(
+          onChanged: (value) {
+            validator.validateEmail(_emailController.text);
+            setState(() {});
+          },
+          controller: _emailController,
           decoration: InputDecoration(
+            errorText: _emailController.text.isEmpty
+                ? null
+                : validator.validateEmail(_emailController.text)
+                    ? null
+                    : 'invalid email',
             hintText: 'Enter email or Phone number',
             filled: true,
             fillColor: Colors.blueGrey[50],
@@ -232,7 +167,17 @@ class Body extends StatelessWidget {
         ),
         const SizedBox(height: 30),
         TextField(
+          onChanged: (x) {
+            setState(() {});
+          },
+          obscureText: true,
+          controller: _passwordController,
           decoration: InputDecoration(
+            errorText: _passwordController.text.isEmpty
+                ? null
+                : (_passwordController.text.length < 6)
+                    ? 'Password too short'
+                    : null,
             hintText: 'Password',
             counterText: 'Forgot password?',
             suffixIcon: const Icon(
@@ -266,18 +211,44 @@ class Body extends StatelessWidget {
               ),
             ],
           ),
-          child: ElevatedButton(
-            child: const SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: Center(child: Text("Sign In"))),
-            onPressed: (){},
-            style: ElevatedButton.styleFrom(
-              primary: Colors.deepPurple,
-              onPrimary: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
+          child: BlocListener<AuthBloc, AuthState>(
+            listener: (context, state) {
+              
+              if (state is AuthErrorState) {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text(state.message)));
+              }
+            },
+            child: BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state) {
+                if (state is AuthLoadingState) {
+                  return Container();
+                } else {
+                  return ElevatedButton(
+                    child: const SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: Center(child: Text("Sign In"))),
+                    onPressed: () {
+                      if (_emailController.text.isNotEmpty &&
+                          _passwordController.text.isNotEmpty &&
+                          _passwordController.text.length > 6 &&
+                          validator.validateEmail(_emailController.text)) {
+                        BlocProvider.of<AuthBloc>(context).add(LoginEvent(
+                            email: _emailController.text,
+                            password: _passwordController.text));
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.deepPurple,
+                      onPrimary: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
+                  );
+                }
+              },
             ),
           ),
         ),
