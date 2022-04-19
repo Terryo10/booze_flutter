@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:booze_flutter/repositories/auth/auth_service.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../models/auth/auth_model.dart';
 import '../../repositories/auth/authentication_repository.dart';
@@ -15,10 +17,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         AuthModel data = await authRepository.login(
             email: event.email, password: event.password);
+        // AuthService authService = AuthService();
+        // authService.addDataToStorage(storage: storage, token: data.token);
         emit(AuthLoadedState(authModel: data));
       } catch (e) {
+        if (kDebugMode) {
+          print(e.toString());
+
+        }
         emit(AuthErrorState(message: e.toString()));
       }
     });
+
   }
 }

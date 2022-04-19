@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:booze_flutter/repositories/auth/authentication_provider.dart';
 
 import '../../models/auth/auth_model.dart';

@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 class Header extends StatefulWidget {
@@ -153,7 +154,9 @@ class _HeaderState extends State<Header> {
                           ),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        context.navigateNamedTo('/login-page'); 
+                      },
                       child: Row(
                         children: const [
                           Icon(Icons.shopping_cart),

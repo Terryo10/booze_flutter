@@ -237,6 +237,9 @@ class _BodyState extends State<Body> {
                         BlocProvider.of<AuthBloc>(context).add(LoginEvent(
                             email: _emailController.text,
                             password: _passwordController.text));
+                      }else{
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(content:  Text('Please fill in the required fields')));
                       }
                     },
                     style: ElevatedButton.styleFrom(

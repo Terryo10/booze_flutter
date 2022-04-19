@@ -16,3 +16,11 @@ class LoginEvent extends AuthEvent {
    @override
   List<Object> get props => [email, password];
 }
+
+
+class LoadingEvent extends AuthEvent {
+  const LoadingEvent();
+
+  @override
+  List<Object> get props => [];
+}
