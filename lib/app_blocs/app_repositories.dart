@@ -1,3 +1,4 @@
+import 'package:booze_flutter/repositories/cache_repository/cache_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -22,6 +23,8 @@ class AppRepositories extends StatelessWidget {
             provider: AuthenticationProvider(storage: storage),
           ),
         ),
+        RepositoryProvider(
+            create: (context) => CacheRepository(storage: storage))
       ],
       child: appBlocs,
     );

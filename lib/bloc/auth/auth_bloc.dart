@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:booze_flutter/repositories/auth/auth_service.dart';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 

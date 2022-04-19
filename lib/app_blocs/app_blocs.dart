@@ -1,10 +1,10 @@
+import 'package:booze_flutter/bloc/cache_bloc/cache_bloc.dart';
 import 'package:booze_flutter/repositories/auth/authentication_repository.dart';
+import 'package:booze_flutter/repositories/cache_repository/cache_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 import '../bloc/auth/auth_bloc.dart';
-// import '../bloc/categories/categories_bloc.dart';
 
 class AppBlocs extends StatelessWidget {
   final Widget app;
@@ -22,6 +22,11 @@ class AppBlocs extends StatelessWidget {
                 RepositoryProvider.of<AuthenticationRepository>(context)),
         lazy: false,
       ),
+      BlocProvider(
+        create: (context) => CacheBloc(
+            authBloc: BlocProvider.of<AuthBloc>(context),
+            cacheRepository: RepositoryProvider.of<CacheRepository>(context)),
+      )
     ], child: app);
   }
 }
