@@ -1,34 +1,52 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../../responsive/responsive.dart';
+
 class Header extends StatefulWidget {
   const Header({Key? key}) : super(key: key);
 
   @override
   State<Header> createState() => _HeaderState();
+  
 }
 
 class _HeaderState extends State<Header> {
+  get drawer => null;
+
   @override
   Widget build(BuildContext context) {
+   
     return Column(
-      children: [...header()],
+      
+      children: [
+        if(Responsive.isMobile(context))
+          Container()
+       else if(Responsive.isDesktop(context))
+         ...header()
+       else if(Responsive.isTablet(context))
+          Container()
+        ],
     );
   }
 
   List<Widget> header() {
     return [
+      
       Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Icon(Icons.menu_outlined),
+          GestureDetector( 
+            onTap: (() =>  Scaffold.of(context).openDrawer()),
+            child: const Icon(Icons.menu_outlined)),
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
                 'BOOZE Liquor & Drinks',
                 style: TextStyle(fontSize: 20),
+                
               ),
             ),
             Expanded(

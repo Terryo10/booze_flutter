@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
@@ -12,6 +11,14 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthenticationRepository authRepository;
   AuthBloc({required this.authRepository}) : super(AuthInitial()) {
+    var currentState = AuthState;
+    if (currentState is AuthLoadedState) {
+      //     router.replaceAll([  
+      //  LoginRoute()
+      // ]);
+      // router.
+      // redirect to landing page
+    }
     on<LoginEvent>((event, emit) async {
       emit(AuthLoadingState());
       try {
@@ -23,11 +30,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } catch (e) {
         if (kDebugMode) {
           print(e.toString());
-
         }
         emit(AuthErrorState(message: e.toString()));
       }
     });
-
   }
 }

@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:booze_flutter/bloc/auth/auth_bloc.dart';
 import 'package:booze_flutter/responsive/responsive.dart';
 import 'package:booze_flutter/ui/auth/helpers/validator.dart';
+import 'package:booze_flutter/ui/body_builder.dart';
 import 'package:booze_flutter/ui/components/header.dart';
 
 import 'package:flutter/material.dart';
@@ -17,9 +18,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFf5f5f5),
-      body: ListView(
+    return BodyBuilder(body: ListView(
         children: [
           const Header(),
           Padding(
@@ -28,8 +27,8 @@ class _LoginPageState extends State<LoginPage> {
             child: const Body(),
           )
         ],
-      ),
-    );
+      ));
+    
   }
 }
 
