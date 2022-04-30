@@ -8,7 +8,7 @@ class CategorySlider extends StatefulWidget {
 }
 
 class _CategorySliderState extends State<CategorySlider> {
-  final ScrollController _controller = new ScrollController();
+  final ScrollController _controller = ScrollController();
   @override
   Widget build(BuildContext context) {
     return SizedBox(

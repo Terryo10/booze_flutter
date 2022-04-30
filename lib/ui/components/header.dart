@@ -8,7 +8,6 @@ class Header extends StatefulWidget {
 
   @override
   State<Header> createState() => _HeaderState();
-  
 }
 
 class _HeaderState extends State<Header> {
@@ -18,13 +17,13 @@ class _HeaderState extends State<Header> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        if(Responsive.isMobile(context))
+        if (Responsive.isMobile(context))
           Container()
-       else if(Responsive.isDesktop(context))
-         ...header()
-       else if(Responsive.isTablet(context))
+        else if (Responsive.isDesktop(context))
+          ...header()
+        else if (Responsive.isTablet(context))
           Container()
-        ],
+      ],
     );
   }
 
@@ -35,15 +34,17 @@ class _HeaderState extends State<Header> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-          GestureDetector( 
-            onTap: (() =>  Scaffold.of(context).openDrawer()),
-            child: const Icon(Icons.menu_outlined)),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                'BOOZE Liquor & Drinks',
-                style: TextStyle(fontSize: 20),
-                
+            GestureDetector(
+                onTap: (() => Scaffold.of(context).openDrawer()),
+                child: const Icon(Icons.menu_outlined)),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: InkWell(
+                onTap: () {},
+                child: const Text(
+                  'BOOZE Liquor & Drinks',
+                  style: TextStyle(fontSize: 20),
+                ),
               ),
             ),
             Expanded(
@@ -160,8 +161,8 @@ class _HeaderState extends State<Header> {
                   height: 45,
                   child: ElevatedButton(
                       style: ButtonStyle(
-                         backgroundColor:
-                                MaterialStateProperty.all(Colors.black),
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.black),
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
@@ -170,7 +171,7 @@ class _HeaderState extends State<Header> {
                         ),
                       ),
                       onPressed: () {
-                        context.navigateNamedTo('/login-page'); 
+                        context.navigateNamedTo('/login-page');
                       },
                       child: Row(
                         children: const [
@@ -185,8 +186,6 @@ class _HeaderState extends State<Header> {
       const Divider(
         height: 2,
       ),
-    
-
     ];
   }
 }
