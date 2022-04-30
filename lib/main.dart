@@ -1,5 +1,6 @@
 import 'package:booze_flutter/locator.dart';
 import 'package:booze_flutter/routes/router.gr.dart';
+import 'package:booze_flutter/services/scoll_behavior.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'app_blocs/app_repositories.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var app = MaterialApp.router(
+      scrollBehavior: MyCustomScrollBehavior(),
       debugShowCheckedModeBanner: false,
       title: 'Booze',
       theme: ThemeData(

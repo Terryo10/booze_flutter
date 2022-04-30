@@ -16,9 +16,7 @@ class _HeaderState extends State<Header> {
 
   @override
   Widget build(BuildContext context) {
-   
     return Column(
-      
       children: [
         if(Responsive.isMobile(context))
           Container()
@@ -32,7 +30,6 @@ class _HeaderState extends State<Header> {
 
   List<Widget> header() {
     return [
-      
       Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(
@@ -187,7 +184,9 @@ class _HeaderState extends State<Header> {
       ),
       const Divider(
         height: 2,
-      )
+      ),
+    
+
     ];
   }
 }

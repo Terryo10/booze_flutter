@@ -24,6 +24,9 @@ class _LandingPageState extends State<LandingPage> {
     return SingleChildScrollView(
       child: Column(children: const [
         Header(),
+        SizedBox(
+          height: 6,
+        ),
         CategorySlider(),
         BannerPage(),
       ]),
