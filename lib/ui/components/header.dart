@@ -1,6 +1,4 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-
 import '../../responsive/responsive.dart';
 
 class Header extends StatefulWidget {
@@ -73,9 +71,11 @@ class _HeaderState extends State<Header> {
                             ),
                           ),
                           onPressed: () {},
-                          child: const Text(
-                            'Delivery',
-                            style: TextStyle(color: Colors.black),
+                          child: const FittedBox(
+                            child: Text(
+                              'Delivery',
+                              style: TextStyle(color: Colors.black),
+                            ),
                           ),
                         ),
                       ),
@@ -96,9 +96,11 @@ class _HeaderState extends State<Header> {
                             ),
                           ),
                           onPressed: () {},
-                          child: const Text(
-                            'Pick Up',
-                            style: TextStyle(color: Colors.black),
+                          child: const FittedBox(
+                            child: Text(
+                              'Pick Up',
+                              style: TextStyle(color: Colors.black),
+                            ),
                           ),
                         ),
                       ),
@@ -171,7 +173,8 @@ class _HeaderState extends State<Header> {
                         ),
                       ),
                       onPressed: () {
-                        context.navigateNamedTo('/login-page');
+                        // context.navigateNamedTo('/login-page');
+                        Scaffold.of(context).openEndDrawer();
                       },
                       child: Row(
                         children: const [
