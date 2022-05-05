@@ -1,6 +1,5 @@
 import 'package:booze_flutter/bloc/auth/auth_bloc.dart';
 import 'package:booze_flutter/ui/body_builder.dart';
-import 'package:booze_flutter/ui/components/banner.dart';
 import 'package:booze_flutter/ui/components/header.dart';
 import 'package:booze_flutter/ui/products/products_filter.dart';
 import 'package:booze_flutter/ui/products/products_page.dart';
