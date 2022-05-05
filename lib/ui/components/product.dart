@@ -69,8 +69,8 @@ class ProductCard extends StatelessWidget {
                       Container(
                         margin: const EdgeInsets.only(bottom: 8, top: 15),
                         child: FittedBox(
-                            child: Image.network(
-                                image ?? AssetConstants.errorIcon)),
+                            child: Image.asset(
+                                AssetConstants.peach)),
                       )
                     ],
                   ),
