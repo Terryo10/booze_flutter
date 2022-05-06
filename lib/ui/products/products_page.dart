@@ -15,12 +15,12 @@ class _ProductsPageState extends State<ProductsPage> {
   Widget build(BuildContext context) {
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: screenWidth(context) > screenHeight(context) ? 4 : 2,
+          crossAxisCount: screenWidth(context) > screenHeight(context) ? 5 : 2,
           childAspectRatio: 181 / 234,
           crossAxisSpacing: 18,
           mainAxisSpacing: 20),
       padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 20),
-      itemCount: 9,
+      itemCount: 10,
       itemBuilder: (context, index) => ProductCard(
         shadeColor: '#ffc0a0',
         image: 'http://ishaqhassan.com:2000/assets/images/products/peach.png',

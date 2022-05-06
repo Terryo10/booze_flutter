@@ -1,7 +1,6 @@
 import 'package:booze_flutter/bloc/auth/auth_bloc.dart';
 import 'package:booze_flutter/ui/body_builder.dart';
 import 'package:booze_flutter/ui/components/header.dart';
-import 'package:booze_flutter/ui/products/products_filter.dart';
 import 'package:booze_flutter/ui/products/products_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,7 +26,7 @@ class _LandingPageState extends State<LandingPage> {
       child: Column(children: [
         const Header(),
         const SizedBox(
-          height: 6,
+          height: 1,
         ),
         const CategorySlider(),
         // const BannerPage(),
@@ -36,20 +35,28 @@ class _LandingPageState extends State<LandingPage> {
           child: Row(
             children: [
               Responsive.isDesktop(context)
-                  ? const Expanded(flex: 1, child: ProductsFilter())
+                  ? const SizedBox(
+                      width: 200,
+                      height: 50,
+                    )
                   : const SizedBox(),
               Expanded(
                 flex: 3,
                 child: Column(
                   children: const [
                     Padding(
-                      padding: EdgeInsets.all(18.0),
+                      padding: EdgeInsets.all(8.0),
                       child: ProductsPage(),
                     ),
                   ],
                 ),
               ),
-             Responsive.isDesktop(context) ? const SizedBox(width: 200,height: 50,) :const SizedBox(),
+              Responsive.isDesktop(context)
+                  ? const SizedBox(
+                      width: 200,
+                      height: 50,
+                    )
+                  : const SizedBox(),
             ],
           ),
         )
