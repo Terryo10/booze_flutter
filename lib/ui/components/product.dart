@@ -3,7 +3,6 @@ import '../../constants/app_strings/constants.dart';
 import '../shared/styles.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-
 class ProductCard extends StatelessWidget {
   final String? shadeColor;
   final String? image;
@@ -11,7 +10,7 @@ class ProductCard extends StatelessWidget {
   final String? title;
   final String? unit;
   final int qtyInCart;
- final bool favoriteToggle;
+  final bool favoriteToggle;
   final VoidCallback onMinusTap;
   final VoidCallback onPlusTap;
   final VoidCallback onFavoriteButtonTap;
@@ -68,16 +67,14 @@ class ProductCard extends StatelessWidget {
                       ),
                       Container(
                         margin: const EdgeInsets.only(bottom: 8, top: 15),
-                        child: FittedBox(
-                            child: Image.asset(
-                                AssetConstants.peach)),
+                        child: FittedBox(child: Image.network(image ?? '' )),
                       )
                     ],
                   ),
                 ),
               ),
               Text(
-                '\$' + (price ?? 0).toString().padRight(4, '0'),
+                '\$' + (price ?? 0).toString(),
                 style: paragraph6.copyWith(color: appGreenColor),
               ),
               Text(

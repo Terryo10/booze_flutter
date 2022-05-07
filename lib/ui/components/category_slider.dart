@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constants/app_strings/strings.dart';
+import '../../models/categories/categories_model.dart';
 
 class CategorySlider extends StatefulWidget {
   const CategorySlider({Key? key}) : super(key: key);
@@ -21,6 +22,14 @@ class _CategorySliderState extends State<CategorySlider> {
       child: BlocBuilder<CategoriesBloc, CategoriesState>(
         builder: (context, state) {
           if (state is CategoriesLoadedState) {
+            List<Datum> data = state.categoriesModel.data ?? [];
+            data.insert(
+                0,
+                Datum(
+                    id: -1,
+                    name: 'All Products',
+                    image: 'images/allProducts.png',
+                    subCategories: []));
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
@@ -30,17 +39,23 @@ class _CategorySliderState extends State<CategorySlider> {
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
                   physics: const AlwaysScrollableScrollPhysics(),
-                  itemCount: state.categoriesModel.data?.length ?? 0,
+                  itemCount: data.length,
                   separatorBuilder: (BuildContext context, int index) {
                     return const SizedBox(
                       width: 8,
                     );
                   },
                   itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
+                    return InkWell(
                       onTap: (() {
-                        if (kDebugMode) {
-                          print('we clicked an ob');
+                        if(data[index].id == -1){
+                          if (kDebugMode) {
+                            print('all products');
+                          }
+                        }else{
+                          if (kDebugMode) {
+                            print('category ${data[index].id }');
+                          }
                         }
                       }),
                       child: Column(
@@ -54,13 +69,13 @@ class _CategorySliderState extends State<CategorySlider> {
                               ),
                               child: FittedBox(
                                   child: Image.network(
-                                      '${Strings.baseUrl}${Strings.imageUrl}/${state.categoriesModel.data?[index].image}')),
+                                      '${Strings.baseUrl}${Strings.imageUrl}/${data[index].image}')),
                             ),
                           ),
                           const SizedBox(
                             height: 10,
                           ),
-                          Text(state.categoriesModel.data?[index].name ?? '')
+                          Text(data[index].name ?? '')
                         ],
                       ),
                     );

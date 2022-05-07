@@ -91,6 +91,7 @@ class Product {
     this.quantity,
     this.price,
     this.oldPrice,
+    this.unit,
     this.subcategoriesId,
     this.createdAt,
     this.updatedAt,
@@ -103,6 +104,7 @@ class Product {
   int? quantity;
   int? price;
   int? oldPrice;
+  String? unit;
   int? subcategoriesId;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -115,6 +117,7 @@ class Product {
         quantity: json["quantity"],
         price: json["price"],
         oldPrice: json["old_price"],
+        unit: json["unit"],
         subcategoriesId: json["subcategories_id"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
@@ -128,6 +131,7 @@ class Product {
         "quantity": quantity,
         "price": price,
         "old_price": oldPrice,
+        "unit": unit,
         "subcategories_id": subcategoriesId,
         "created_at": createdAt!.toIso8601String(),
         "updated_at": updatedAt!.toIso8601String(),

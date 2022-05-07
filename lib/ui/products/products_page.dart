@@ -1,5 +1,9 @@
+import 'package:booze_flutter/bloc/categories/categories_bloc.dart';
 import 'package:booze_flutter/ui/shared/helpers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../constants/app_strings/strings.dart';
+import '../../models/categories/categories_model.dart';
 import '../components/product.dart';
 
 class ProductsPage extends StatefulWidget {
@@ -10,31 +14,43 @@ class ProductsPage extends StatefulWidget {
 }
 
 class _ProductsPageState extends State<ProductsPage> {
-  
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: screenWidth(context) > screenHeight(context) ? 5 : 2,
-          childAspectRatio: 181 / 234,
-          crossAxisSpacing: 18,
-          mainAxisSpacing: 20),
-      padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 20),
-      itemCount: 10,
-      itemBuilder: (context, index) => ProductCard(
-        shadeColor: '#ffc0a0',
-        image: 'http://ishaqhassan.com:2000/assets/images/products/peach.png',
-        price: 22,
-        title: 'Peach',
-        unit: 'dozen',
-        qtyInCart: 0,
-        onMinusTap: () => () {},
-        onPlusTap: () => () {},
-        onFavoriteButtonTap: () => () {},
-        favoriteToggle: false,
+    return BlocListener<CategoriesBloc, CategoriesState>(
+      listener: (context, state) {},
+      child: BlocBuilder<CategoriesBloc, CategoriesState>(
+        builder: (context, state) {
+          if (state is CategoriesLoadedState) {
+            return GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount:
+                      screenWidth(context) > screenHeight(context) ? 5 : 2,
+                  childAspectRatio: 181 / 234,
+                  crossAxisSpacing: 18,
+                  mainAxisSpacing: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 20),
+              itemCount: state.products.length,
+              itemBuilder: (context, index) => ProductCard(
+                shadeColor: '#ffc0a0',
+                image:'${Strings.baseUrl}${Strings.imageUrl}/${state.products[index].imagePath}',
+                price:  double.parse(state.products[index].price.toString()),
+                title: state.products[index].title,
+                unit: state.products[index].unit,
+                qtyInCart: 0,
+                onMinusTap: () => () {},
+                onPlusTap: () => () {},
+                onFavoriteButtonTap: () => () {},
+                favoriteToggle: false,
+              ),
+              shrinkWrap: true,
+              primary: false,
+            );
+          }
+          return Container();
+        },
       ),
-      shrinkWrap: true,
-      primary: false,
     );
   }
+
+ 
 }

@@ -5,4 +5,5 @@ class Strings {
   static const String login = "/login";
   static const String registerUrl = "/register";
   static const String categoriesrUrl = '/categories';
+  static const String productsUrl = '/products';
 }
