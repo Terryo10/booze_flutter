@@ -1,5 +1,4 @@
 import 'package:booze_flutter/bloc/categories/categories_bloc.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,13 +22,7 @@ class _CategorySliderState extends State<CategorySlider> {
         builder: (context, state) {
           if (state is CategoriesLoadedState) {
             List<Datum> data = state.categoriesModel.data ?? [];
-            data.insert(
-                0,
-                Datum(
-                    id: -1,
-                    name: 'All Products',
-                    image: 'images/allProducts.png',
-                    subCategories: []));
+           
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
@@ -48,15 +41,11 @@ class _CategorySliderState extends State<CategorySlider> {
                   itemBuilder: (BuildContext context, int index) {
                     return InkWell(
                       onTap: (() {
-                        if(data[index].id == -1){
-                          if (kDebugMode) {
-                            print('all products');
-                          }
-                        }else{
-                          if (kDebugMode) {
-                            print('category ${data[index].id }');
-                          }
-                        }
+                        BlocProvider.of<CategoriesBloc>(context)
+                            .add(FilterByCategory(
+                          categoriesModel: state.categoriesModel,
+                          categoryId: data[index].id ?? -1,
+                        ));
                       }),
                       child: Column(
                         children: [

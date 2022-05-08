@@ -177,9 +177,9 @@ class _HeaderState extends State<Header> {
                         Scaffold.of(context).openEndDrawer();
                       },
                       child: Row(
-                        children: const [
+                        children:  const[
                           Icon(Icons.shopping_cart),
-                          Text(' 1 Cart'),
+                          Text(' 0 Cart'),
                         ],
                       ))),
             ),

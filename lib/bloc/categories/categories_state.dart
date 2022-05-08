@@ -18,7 +18,7 @@ class CategoriesLoadedState extends CategoriesState {
   const CategoriesLoadedState({required this.categoriesModel, required this.products});
 
   @override
-  List<Object> get props => [categoriesModel];
+  List<Object> get props => [categoriesModel , products];
 }
 
 class CategoriesErrorState extends CategoriesState {

@@ -12,7 +12,7 @@ class ProductCard extends StatelessWidget {
   final int qtyInCart;
   final bool favoriteToggle;
   final VoidCallback onMinusTap;
-  final VoidCallback onPlusTap;
+  final Function onPlusTap;
   final VoidCallback onFavoriteButtonTap;
 
   const ProductCard({
@@ -118,7 +118,7 @@ class ProductCard extends StatelessWidget {
                                 style: paragraph6.copyWith(color: Colors.black),
                               ),
                               GestureDetector(
-                                onTap: onPlusTap,
+                                onTap: onPlusTap(),
                                 child: Container(
                                   color: Colors.transparent,
                                   width: 41,
@@ -133,7 +133,7 @@ class ProductCard extends StatelessWidget {
                           ),
                         )
                       : GestureDetector(
-                          onTap: onPlusTap,
+                          onTap: onPlusTap(),
                           child: Container(
                             height: 40,
                             color: Colors.transparent,

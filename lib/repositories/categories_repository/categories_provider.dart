@@ -23,21 +23,4 @@ class CategoriesProvider {
     }
   }
 
-    Future getProducts() async {
-    try {
-      String url = '${Strings.baseUrl}${Strings.api}${Strings.productsUrl}';
-      var headers = <String, String>{"content-type": "application/json"};
-      var response = await http.get(Uri.parse(url), headers: headers);
-
-      if (response.statusCode == 200) {
-        return response.body;
-      } else {
-        throw Exception("Oops! Something went wrong..");
-      }
-    } on SocketException {
-      throw Exception('We cannot connect, check your connection');
-    } catch (e) {
-      throw Exception("Oops! Something went wrong...");
-    }
-  }
 }

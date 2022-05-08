@@ -1,9 +1,11 @@
 import 'package:booze_flutter/bloc/categories/categories_bloc.dart';
+
 import 'package:booze_flutter/ui/shared/helpers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../constants/app_strings/strings.dart';
-import '../../models/categories/categories_model.dart';
+
 import '../components/product.dart';
 
 class ProductsPage extends StatefulWidget {
@@ -32,13 +34,22 @@ class _ProductsPageState extends State<ProductsPage> {
               itemCount: state.products.length,
               itemBuilder: (context, index) => ProductCard(
                 shadeColor: '#ffc0a0',
-                image:'${Strings.baseUrl}${Strings.imageUrl}/${state.products[index].imagePath}',
-                price:  double.parse(state.products[index].price.toString()),
+                image:
+                    '${Strings.baseUrl}${Strings.imageUrl}/${state.products[index].imagePath}',
+                price: double.parse(state.products[index].price.toString()),
                 title: state.products[index].title,
                 unit: state.products[index].unit,
                 qtyInCart: 0,
                 onMinusTap: () => () {},
-                onPlusTap: () => () {},
+                onPlusTap: () => () {
+                  if (kDebugMode) {
+                    print('fired');
+                  }
+                  
+                  setState(() {
+                    
+                  });
+                },
                 onFavoriteButtonTap: () => () {},
                 favoriteToggle: false,
               ),
@@ -51,6 +62,4 @@ class _ProductsPageState extends State<ProductsPage> {
       ),
     );
   }
-
- 
 }
