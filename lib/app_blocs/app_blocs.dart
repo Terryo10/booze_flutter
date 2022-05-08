@@ -1,4 +1,5 @@
 import 'package:booze_flutter/bloc/cache_bloc/cache_bloc.dart';
+import 'package:booze_flutter/bloc/cart_bloc/cart_bloc.dart';
 import 'package:booze_flutter/repositories/auth/authentication_repository.dart';
 import 'package:booze_flutter/repositories/cache_repository/cache_repository.dart';
 import 'package:booze_flutter/repositories/categories_repository/categories_repository.dart';
@@ -35,6 +36,13 @@ class AppBlocs extends StatelessWidget {
                 RepositoryProvider.of<CategoriesRepository>(context))
           ..add(
             GetCategoriesEvent(),
+          ),
+        lazy: false,
+      ),
+      BlocProvider(
+        create: (context) => CartBloc(storage)
+          ..add(
+            CartStarted(),
           ),
         lazy: false,
       )

@@ -1,4 +1,6 @@
+import 'package:booze_flutter/bloc/cart_bloc/cart_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../responsive/responsive.dart';
 
 class Header extends StatefulWidget {
@@ -177,9 +179,16 @@ class _HeaderState extends State<Header> {
                         Scaffold.of(context).openEndDrawer();
                       },
                       child: Row(
-                        children:  const[
-                          Icon(Icons.shopping_cart),
-                          Text(' 0 Cart'),
+                        children:  [
+                         const Icon(Icons.shopping_cart),
+                          BlocBuilder<CartBloc, CartState>(
+                            builder: (context, state) {
+                              if(state is CartLoadedState){
+                                return Text(' ${state.cartCount} Cart');
+                              }
+                              return const Text(' 0 Cart');
+                            },
+                          ),
                         ],
                       ))),
             ),

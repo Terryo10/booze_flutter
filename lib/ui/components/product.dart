@@ -11,7 +11,7 @@ class ProductCard extends StatelessWidget {
   final String? unit;
   final int qtyInCart;
   final bool favoriteToggle;
-  final VoidCallback onMinusTap;
+  final Function onMinusTap;
   final Function onPlusTap;
   final VoidCallback onFavoriteButtonTap;
 
@@ -101,8 +101,8 @@ class ProductCard extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              GestureDetector(
-                                onTap: onMinusTap,
+                              InkWell(
+                                onTap: onMinusTap(),
                                 child: Container(
                                   color: Colors.transparent,
                                   width: 41,
@@ -117,7 +117,7 @@ class ProductCard extends StatelessWidget {
                                 qtyInCart.toString(),
                                 style: paragraph6.copyWith(color: Colors.black),
                               ),
-                              GestureDetector(
+                              InkWell(
                                 onTap: onPlusTap(),
                                 child: Container(
                                   color: Colors.transparent,
@@ -132,7 +132,7 @@ class ProductCard extends StatelessWidget {
                             ],
                           ),
                         )
-                      : GestureDetector(
+                      : InkWell(
                           onTap: onPlusTap(),
                           child: Container(
                             height: 40,
