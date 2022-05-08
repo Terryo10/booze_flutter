@@ -1,6 +1,8 @@
+import 'package:booze_flutter/responsive/responsive.dart';
 import 'package:booze_flutter/ui/cart/drawer_cart.dart';
 import 'package:flutter/material.dart';
 
+import 'cart/cart_floating_action.dart';
 import 'components/side_menu.dart';
 
 class BodyBuilder extends StatelessWidget {
@@ -14,6 +16,7 @@ class BodyBuilder extends StatelessWidget {
       drawer: const SideBarMenu() ,
       endDrawer: const DrawerCart(),
       body: body,
+      floatingActionButton: Responsive.isMobile(context) ? const FloatingActionCart() : null,
     );
   }
 }

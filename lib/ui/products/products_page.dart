@@ -68,9 +68,7 @@ class _ProductsPageState extends State<ProductsPage> {
                               productId: categoriesState.products[index].id)
                           : 0,
                       onMinusTap: () => () {
-                        if (kDebugMode) {
-                          print('clinking');
-                        }
+                     
                         BlocProvider.of<CartBloc>(context).add(
                           DecrementFromToCart(categoriesState.products[index]),
                         );

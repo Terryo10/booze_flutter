@@ -121,7 +121,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
     on<CartStarted>(
       (event, emit) async {
-         emit(CartLoadingState());
+        emit(CartLoadingState());
         var items = await storage.read(key: 'cartItems');
         List<CartItems> storageCartItems = [];
         if (items != null) {
@@ -142,13 +142,53 @@ class CartBloc extends Bloc<CartEvent, CartState> {
               print(e.toString());
             }
           }
-        }else{
-           emit(CartLoadedState(
-                cartItems: storageCartItems,
-                cartCount: cartCount + storageCartItems.length));
-
+        } else {
+          emit(CartLoadedState(
+              cartItems: storageCartItems,
+              cartCount: cartCount + storageCartItems.length));
         }
       },
     );
+
+    on<RemoveFromToCart>((event, emit) async {
+      emit(CartLoadingState());
+      var items = await storage.read(key: 'cartItems');
+      List<CartItems> storageCartItems = [];
+
+      if (items != null) {
+        try {
+          List unModelledCartItems = await jsonDecode(items); //storage
+          //check if list contains
+          for (var element in unModelledCartItems) {
+            storageCartItems.add(CartItems(
+                product: Product.fromJson(element["product"]),
+                quantity: element["quantity"]));
+          }
+          var contain = storageCartItems
+              .where((element) => element.product.id == event.product.id);
+          if (contain.isEmpty) {
+            //dont decrement
+          } else {
+            //remove from cart
+            storageCartItems.removeWhere(
+                (element) => element.product.id == event.product.id);
+            String? obj = jsonEncode(storageCartItems);
+            storage.write(key: 'cartItems', value: obj);
+          }
+
+          emit(CartLoadedState(
+              cartItems: storageCartItems,
+              cartCount: cartCount + storageCartItems.length));
+        } catch (e) {
+          if (kDebugMode) {
+            print(e.toString());
+          }
+        }
+      } else {
+        emit(CartLoadedState(
+            cartItems: storageCartItems,
+            cartCount: cartCount + storageCartItems.length));
+      }
+    });
   }
 }

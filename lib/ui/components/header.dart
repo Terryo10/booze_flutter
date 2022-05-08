@@ -18,11 +18,25 @@ class _HeaderState extends State<Header> {
     return Column(
       children: [
         if (Responsive.isMobile(context))
-          Container()
+          AppBar(
+            backgroundColor: Colors.black,
+            title: const Text('Booze'),
+            actions: [
+            Builder(
+              builder: (context) => IconButton(
+                    icon: const Icon(Icons.shopping_bag),
+                    onPressed: () => Scaffold.of(context).openEndDrawer(),
+                    tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+                  ),
+            ),
+            ])
         else if (Responsive.isDesktop(context))
           ...header()
         else if (Responsive.isTablet(context))
-          Container()
+         AppBar(
+            backgroundColor: Colors.black,
+            title: const Text('Booze'),
+          )
       ],
     );
   }

@@ -45,6 +45,8 @@ dependencies:
   get: ^4.6.1
   google_fonts: ^2.3.2
   flutter_svg: ^1.0.3
+  flutter_slidable: ^1.2.0
+  intl: ^0.17.0
   
 
 dev_dependencies:
