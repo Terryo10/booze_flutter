@@ -20,3 +20,12 @@ class FilterByCategory extends CategoriesEvent {
   @override
   List<Object> get props => [];
 }
+
+class FilterProducts extends CategoriesEvent {
+  final String query;
+   final CategoriesModel categoriesModel;
+
+  const FilterProducts({required this.categoriesModel, required this.query});
+  @override
+  List<Object> get props => [];
+}

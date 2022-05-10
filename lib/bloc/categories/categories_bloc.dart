@@ -20,7 +20,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
                 name: 'All Products',
                 image: 'images/allProducts.png',
                 subCategories: []));
-        ;
+
         List<Product> productsSetter(List<Datum>? categories) {
           List<Product> products = [];
           for (var element in categories ?? []) {
@@ -80,6 +80,30 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
           products: (event.categoryId == -1)
               ? productsSetter(event.categoriesModel.data)
               : categoryProductSetter(selectedCategory)));
+    });
+
+    on<FilterProducts>((event, emit) {
+      emit(CategoriesLoadingState());
+      List<Product> productsSetter(List<Datum>? categories) {
+        List<Product> products = [];
+        for (var element in categories ?? []) {
+          for (SubCategory element in element.subCategories ?? []) {
+            for (Product element in element.products ?? []) {
+              if (element.title!.toLowerCase().contains(event.query.toLowerCase())) {
+                products.add(element);
+              }
+            }
+          }
+        }
+        return products;
+      }
+
+      emit(
+        CategoriesLoadedState(
+          categoriesModel: event.categoriesModel,
+          products: productsSetter(event.categoriesModel.data),
+        ),
+      );
     });
   }
 }

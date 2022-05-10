@@ -1,4 +1,6 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:booze_flutter/bloc/cart_bloc/cart_bloc.dart';
+import 'package:booze_flutter/bloc/categories/categories_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../responsive/responsive.dart';
@@ -11,7 +13,8 @@ class Header extends StatefulWidget {
 }
 
 class _HeaderState extends State<Header> {
-  get drawer => null;
+  final TextEditingController _searchProductController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -19,21 +22,22 @@ class _HeaderState extends State<Header> {
       children: [
         if (Responsive.isMobile(context))
           AppBar(
-            backgroundColor: Colors.black,
-            title: const Text('Booze'),
-            actions: [
-            Builder(
-              builder: (context) => IconButton(
+              backgroundColor: Colors.black,
+              title: const Text('Booze'),
+              actions: [
+                Builder(
+                  builder: (context) => IconButton(
                     icon: const Icon(Icons.shopping_bag),
                     onPressed: () => Scaffold.of(context).openEndDrawer(),
-                    tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+                    tooltip:
+                        MaterialLocalizations.of(context).openAppDrawerTooltip,
                   ),
-            ),
-            ])
+                ),
+              ])
         else if (Responsive.isDesktop(context))
           ...header()
         else if (Responsive.isTablet(context))
-         AppBar(
+          AppBar(
             backgroundColor: Colors.black,
             title: const Text('Booze'),
           )
@@ -54,7 +58,9 @@ class _HeaderState extends State<Header> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  context.navigateNamedTo('/');
+                },
                 child: const Text(
                   'BOOZE Liquor & Drinks',
                   style: TextStyle(fontSize: 20),
@@ -153,23 +159,57 @@ class _HeaderState extends State<Header> {
               flex: 4,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.search),
-                    hintText: 'Search Products',
-                    filled: true,
-                    fillColor: Colors.blueGrey[50],
-                    labelStyle: const TextStyle(fontSize: 12),
-                    contentPadding: const EdgeInsets.only(left: 30),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blueGrey.shade50),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blueGrey.shade50),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
+                child: BlocBuilder<CategoriesBloc, CategoriesState>(
+                  builder: (context, state) {
+                    if (state is CategoriesLoadedState) {
+                      return TextField(
+                        controller: _searchProductController,
+                        onChanged: (value) {
+                          if (_searchProductController.text.isEmpty) {
+                            //reset to all products
+                            BlocProvider.of<CategoriesBloc>(context).add(
+                                FilterByCategory(
+                                    categoryId: -1,
+                                    categoriesModel: state.categoriesModel));
+                          } else {
+                            BlocProvider.of<CategoriesBloc>(context).add(
+                                FilterProducts(
+                                    categoriesModel: state.categoriesModel,
+                                    query: _searchProductController.text));
+                          }
+                        },
+                        decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            icon: const Icon(Icons.clear), // clear text
+                            onPressed: () {
+                              _searchProductController.clear();
+                                   BlocProvider.of<CategoriesBloc>(context).add(
+                                FilterByCategory(
+                                    categoryId: -1,
+                                    categoriesModel: state.categoriesModel));
+                            },
+                          ),
+                          prefixIcon: const Icon(Icons.search),
+                          hintText: 'Search Products',
+                          filled: true,
+                          fillColor: Colors.blueGrey[50],
+                          labelStyle: const TextStyle(fontSize: 12),
+                          contentPadding: const EdgeInsets.only(left: 30),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.blueGrey.shade50),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.blueGrey.shade50),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                      );
+                    }
+                    return Container();
+                  },
                 ),
               ),
             ),
@@ -193,11 +233,11 @@ class _HeaderState extends State<Header> {
                         Scaffold.of(context).openEndDrawer();
                       },
                       child: Row(
-                        children:  [
-                         const Icon(Icons.shopping_cart),
+                        children: [
+                          const Icon(Icons.shopping_cart),
                           BlocBuilder<CartBloc, CartState>(
                             builder: (context, state) {
-                              if(state is CartLoadedState){
+                              if (state is CartLoadedState) {
                                 return Text(' ${state.cartCount} Cart');
                               }
                               return const Text(' 0 Cart');

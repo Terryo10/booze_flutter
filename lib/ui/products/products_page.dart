@@ -2,7 +2,7 @@ import 'package:booze_flutter/bloc/cart_bloc/cart_bloc.dart';
 import 'package:booze_flutter/bloc/categories/categories_bloc.dart';
 
 import 'package:booze_flutter/ui/shared/helpers.dart';
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../constants/app_strings/strings.dart';

@@ -77,9 +77,11 @@ class ProductCard extends StatelessWidget {
                 '\$' + (price ?? 0).toString(),
                 style: paragraph6.copyWith(color: appGreenColor),
               ),
-              Text(
-                title ?? '',
-                style: heading7.copyWith(color: Colors.black),
+              FittedBox(
+                child: Text(
+                  title ?? '',
+                  style: heading7.copyWith(color: Colors.black),
+                ),
               ),
               const SizedBox(height: 2),
               Text(

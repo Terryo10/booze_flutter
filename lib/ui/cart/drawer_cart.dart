@@ -1,5 +1,6 @@
 import 'package:booze_flutter/bloc/cart_bloc/cart_bloc.dart';
 import 'package:booze_flutter/models/cart/cart_items.dart';
+import 'package:booze_flutter/ui/cart/shipping_with_costs.dart';
 import 'package:booze_flutter/ui/shared/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +10,7 @@ import 'package:intl/intl.dart';
 
 import '../../constants/app_strings/constants.dart';
 import '../../constants/app_strings/strings.dart';
-import '../shared/helpers.dart';
+
 
 class DrawerCart extends StatefulWidget {
   const DrawerCart({Key? key}) : super(key: key);
@@ -29,11 +30,15 @@ class _DrawerCartState extends State<DrawerCart> {
             List<CartItems> cartItems = state.cartItems;
             return Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  header(),
-                  ...slidable(cartItems, context, currencyFormat)
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(height:20),
+                    header(),
+                    ...slidable(cartItems, context, currencyFormat),
+                    const ShippingWithCosts()
+                  ],
+                ),
               ),
             );
           } else {
@@ -54,7 +59,10 @@ class _DrawerCartState extends State<DrawerCart> {
           child: FittedBox(
             child: Text(
               'Shopping Cart',
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green ,fontSize: 20),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green,
+                  fontSize: 20),
             ),
           ),
         ),
@@ -74,11 +82,12 @@ class _DrawerCartState extends State<DrawerCart> {
             children: [
               GestureDetector(
                 onTap: () {
-                  BlocProvider.of<CartBloc>(context).add(RemoveFromToCart(cartItems[index].product));
+                  BlocProvider.of<CartBloc>(context)
+                      .add(RemoveFromToCart(cartItems[index].product));
                 },
                 child: Container(
                   margin: const EdgeInsets.only(top: 11),
-                  width: (screenWidth(context) * 0.22) - 17,
+                  width: 50,//(screenWidth(context) * 0.22) - 17,
                   alignment: Alignment.center,
                   color: appRedColor,
                   child: Image.asset(
@@ -132,29 +141,36 @@ class _DrawerCartState extends State<DrawerCart> {
                   ],
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 2),
-                  Text(
-                    '\$' +
-                        currencyFormat
-                            .format(cartItems[index].product.price ?? 0)
-                            .toString() +
-                        '  x  ' +
-                        (cartItems[index].quantity).toString(),
-                    style: paragraph6.copyWith(color: appGreenColor),
-                  ),
-                  Text(
-                    cartItems[index].product.title ?? '',
-                    style: heading7.copyWith(color: Colors.black),
-                  ),
-                  Text(
-                    cartItems[index].product.unit ?? '',
-                    style: paragraph6,
-                  ),
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 2),
+                    FittedBox(
+                      child: Text(
+                        '\$' +
+                            currencyFormat
+                                .format(cartItems[index].product.price ?? 0)
+                                .toString() +
+                            '  x  ' +
+                            (cartItems[index].quantity).toString(),
+                        style: paragraph6.copyWith(color: appGreenColor),
+                      ),
+                    ),
+                    FittedBox(
+                      fit: BoxFit.contain,
+                      child: Text(
+                        cartItems[index].product.title ?? '',
+                        style: heading7.copyWith(color: Colors.black),
+                      ),
+                    ),
+                    Text(
+                      cartItems[index].product.unit ?? '',
+                      style: paragraph6,
+                    ),
+                  ],
+                ),
               ),
               const Spacer(),
               SizedBox(
