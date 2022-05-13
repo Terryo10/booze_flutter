@@ -1,14 +1,12 @@
 import 'package:booze_flutter/ui/shared/styles.dart';
 import 'package:flutter/material.dart';
 
-import '../../constants/app_strings/constants.dart';
-
 class FloatingActionCart extends StatelessWidget {
-  const FloatingActionCart({ Key? key }) : super(key: key);
+  const FloatingActionCart({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-   return Align(
+    return Align(
       alignment: Alignment.bottomRight,
       child: GestureDetector(
         onTap: () {
@@ -30,10 +28,7 @@ class FloatingActionCart extends StatelessWidget {
               ),
             ],
           ),
-          child: Image.asset(
-            AssetConstants.cartIconWhite,
-            width: 21,
-          ),
+          child: const Icon(Icons.shopping_bag),
         ),
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:booze_flutter/bloc/categories/categories_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../constants/app_strings/strings.dart';
 import '../../models/categories/categories_model.dart';
@@ -22,7 +23,7 @@ class _CategorySliderState extends State<CategorySlider> {
         builder: (context, state) {
           if (state is CategoriesLoadedState) {
             List<Datum> data = state.categoriesModel.data ?? [];
-           
+
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
@@ -72,11 +73,61 @@ class _CategorySliderState extends State<CategorySlider> {
                 ),
               ),
             );
+          } else if (state is CategoriesLoadingState) {
+            return shimmer();
           } else {
             return Container();
           }
         },
       ),
     );
+  }
+
+  Padding shimmer() {
+    return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              height: 120.0,
+              child: ListView.separated(
+                controller: _controller,
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                physics: const AlwaysScrollableScrollPhysics(),
+                itemCount: 20,
+                separatorBuilder: (BuildContext context, int index) {
+                  return const SizedBox(
+                    width: 8,
+                  );
+                },
+                itemBuilder: (BuildContext context, int index) {
+                  return Shimmer.fromColors(
+                    baseColor: Colors.grey,
+                    highlightColor: Colors.white,
+                    child: InkWell(
+                      onTap: (() {}),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              width: 127,
+                              height: 127,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: const FittedBox(child: SizedBox()),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          const Text('')
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          );
   }
 }
