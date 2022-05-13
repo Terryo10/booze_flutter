@@ -12,7 +12,6 @@ class _RecipientDetailsState extends State<RecipientDetails> {
   Widget build(BuildContext context) {
     return const SizedBox(
       child:  Text('Recipient tab'),
-      
     );
   }
 }
