@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 
-class Payments extends StatefulWidget {
-  const Payments({Key? key}) : super(key: key);
+class Extras extends StatefulWidget {
+  const Extras({Key? key}) : super(key: key);
 
   @override
-  State<Payments> createState() => _PaymentsState();
+  State<Extras> createState() => _ExtrasState();
 }
 
-class _PaymentsState extends State<Payments> {
+class _ExtrasState extends State<Extras> {
   String selectedRadio = 'Extra';
   List<String> radios = [
-    'Ecocash',
-    'Cash On Delivery',
+    'Ice',
+    'Tonic',
+    'Cranbery',
+    'Coke',
+    'Water',
+    'Lemonade',
   ];
 
   @override
