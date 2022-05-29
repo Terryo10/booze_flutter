@@ -76,7 +76,8 @@ class _CategorySliderState extends State<CategorySlider> {
           } else if (state is CategoriesLoadingState) {
             return shimmer();
           } else {
-            return Container();
+            return shimmer();
+            // return Container();
           }
         },
       ),
@@ -85,49 +86,56 @@ class _CategorySliderState extends State<CategorySlider> {
 
   Padding shimmer() {
     return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              height: 120.0,
-              child: ListView.separated(
-                controller: _controller,
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                physics: const AlwaysScrollableScrollPhysics(),
-                itemCount: 20,
-                separatorBuilder: (BuildContext context, int index) {
-                  return const SizedBox(
-                    width: 8,
-                  );
-                },
-                itemBuilder: (BuildContext context, int index) {
-                  return Shimmer.fromColors(
-                    baseColor: Colors.grey,
-                    highlightColor: Colors.white,
-                    child: InkWell(
-                      onTap: (() {}),
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              width: 127,
-                              height: 127,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: const FittedBox(child: SizedBox()),
-                            ),
+      padding: const EdgeInsets.all(8.0),
+      child: SizedBox(
+        height: 120.0,
+        child: ListView.separated(
+          controller: _controller,
+          scrollDirection: Axis.horizontal,
+          shrinkWrap: true,
+          physics: const AlwaysScrollableScrollPhysics(),
+          itemCount: 20,
+          separatorBuilder: (BuildContext context, int index) {
+            return const SizedBox(
+              width: 8,
+            );
+          },
+          itemBuilder: (BuildContext context, int index) {
+            return Shimmer.fromColors(
+              baseColor: Colors.red,
+              highlightColor: Colors.yellow,
+              enabled: true,
+              child: InkWell(
+                onTap: (() {}),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.red,
+                        highlightColor: Colors.yellow,
+                        child: Container(
+                          width: 127,
+                          height: 127,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
                           ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const Text('')
-                        ],
+                          child: const FittedBox(child: SizedBox(
+                            height: 30,
+                          )),
+                        ),
                       ),
                     ),
-                  );
-                },
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Text('Loading...')
+                  ],
+                ),
               ),
-            ),
-          );
+            );
+          },
+        ),
+      ),
+    );
   }
 }

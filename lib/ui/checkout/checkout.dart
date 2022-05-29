@@ -1,5 +1,6 @@
 import 'package:booze_flutter/responsive/responsive.dart';
 import 'package:booze_flutter/ui/body_builder.dart';
+import 'package:booze_flutter/ui/checkout/delivery.dart';
 import 'package:booze_flutter/ui/checkout/extras.dart';
 import 'package:booze_flutter/ui/checkout/payments/payments.dart';
 import 'package:booze_flutter/ui/checkout/recipient_details.dart';
@@ -38,7 +39,7 @@ class _CheckoutState extends State<Checkout> {
       Step(
           isActive: currentStep >= 3,
           title: const FittedBox(child: Text('Delivery Times')),
-          content: const RecipientDetails()),
+          content: const Delivery()),
       Step(
           isActive: currentStep >= 4,
           title: const FittedBox(child: Text('Confirm Order')),
