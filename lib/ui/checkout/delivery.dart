@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../bloc/checkout_bloc/checkout_bloc.dart';
+import '../../models/checkout/checkout_model.dart';
 
 class Delivery extends StatefulWidget {
-  const Delivery({ Key? key }) : super(key: key);
+  const Delivery({Key? key}) : super(key: key);
 
   @override
   State<Delivery> createState() => _DeliveryState();
@@ -13,27 +17,32 @@ class _DeliveryState extends State<Delivery> {
     'Express Today 30minutes to you (\$ 2.00)',
     '1 hour to you  (\$ 1.00)',
     '3 days to you  (\$ 0.50)',
-    
-  
   ];
 
   @override
   Widget build(BuildContext context) {
-    return buildList(extras: radios);
+    return BlocBuilder<CheckoutBloc, CheckoutState>(
+      builder: (context, state) {
+        if(state is CheckoutLoadedState) {
+          return buildList(deliveryTimes: state.checkoutModel.deliveryTimes);
+        }
+        return Container();
+      },
+    );
   }
 
-  Widget buildList({required List<String> extras}) {
-    var list = extras;
+  Widget buildList({required List<DeliveryTime> ? deliveryTimes}) {
+    var list = deliveryTimes ?? [];
     return ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
-        itemCount: list.length,
+        itemCount: list.length ,
         itemBuilder: (BuildContext context, int index) {
           return expertiseCard(list[index]);
         });
   }
 
-  Widget expertiseCard(String radios) {
+  Widget expertiseCard(DeliveryTime deliveryTime) {
     return Card(
       elevation: 2,
       child: Padding(
@@ -50,7 +59,7 @@ class _DeliveryState extends State<Delivery> {
                     children: [
                       FittedBox(
                         child: Text(
-                          radios,
+                          '${deliveryTime.title } (${deliveryTime.type})',
                           style: const TextStyle(
                               color: Colors.black,
                               fontSize: 14,
@@ -67,7 +76,7 @@ class _DeliveryState extends State<Delivery> {
               child: Column(
                 children: [
                   Radio<String>(
-                    value: radios,
+                    value: deliveryTime.title ?? '',
                     groupValue: selectedRadio,
                     activeColor: Colors.green,
                     onChanged: (value) {},

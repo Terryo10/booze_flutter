@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../bloc/checkout_bloc/checkout_bloc.dart';
+import '../../../models/checkout/checkout_model.dart';
 
 class Payments extends StatefulWidget {
   const Payments({Key? key}) : super(key: key);
@@ -8,29 +12,33 @@ class Payments extends StatefulWidget {
 }
 
 class _PaymentsState extends State<Payments> {
-  String selectedRadio = 'Extra';
-  List<String> radios = [
-    'Ecocash',
-    'Cash On Delivery',
-  ];
+  String selectedRadio = 'Ecocash';
+ 
 
   @override
   Widget build(BuildContext context) {
-    return buildList(extras: radios);
+    return BlocBuilder<CheckoutBloc, CheckoutState>(
+      builder: (context, state) {
+        if (state is CheckoutLoadedState) {
+          return buildList(paymentMethods: state.checkoutModel.paymentMethods);
+        }
+        return Container();
+      },
+    );
   }
 
-  Widget buildList({required List<String> extras}) {
-    var list = extras;
+  Widget buildList({required List<PaymentMethod> ? paymentMethods}) {
+    var list = paymentMethods ?? [];
     return ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         itemCount: list.length,
         itemBuilder: (BuildContext context, int index) {
-          return expertiseCard(list[index]);
+          return paymentsCard(list[index]);
         });
   }
 
-  Widget expertiseCard(String radios) {
+  Widget paymentsCard(PaymentMethod paymentMethod) {
     return Card(
       elevation: 2,
       child: Padding(
@@ -46,7 +54,7 @@ class _PaymentsState extends State<Payments> {
                   Row(
                     children: [
                       Text(
-                        radios,
+                        paymentMethod.name ?? '',
                         style: const TextStyle(
                             color: Colors.black,
                             fontSize: 14,
@@ -62,9 +70,9 @@ class _PaymentsState extends State<Payments> {
               child: Column(
                 children: [
                   Radio<String>(
-                    value: radios,
+                    value: paymentMethod.name ?? '',
                     groupValue: selectedRadio,
-                    activeColor: Colors.green,
+                    activeColor: Colors.black,
                     onChanged: (value) {},
                   ),
                 ],

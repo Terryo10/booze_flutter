@@ -1,4 +1,10 @@
+import 'dart:math';
+
+import 'package:booze_flutter/models/checkout/checkout_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../bloc/checkout_bloc/checkout_bloc.dart';
 
 class Extras extends StatefulWidget {
   const Extras({Key? key}) : super(key: key);
@@ -16,26 +22,38 @@ class _ExtrasState extends State<Extras> {
     'Coke',
     'Water',
     'Lemonade',
-  
+    'Ice',
+    'Tonic',
+    'Cranbery',
+    'Coke',
+    'Water',
+    'Lemonade',
   ];
 
   @override
   Widget build(BuildContext context) {
-    return buildList(extras: radios);
+    return BlocBuilder<CheckoutBloc, CheckoutState>(
+      builder: (context, state) {
+        if (state is CheckoutLoadedState) {
+          return buildList(extras: state.checkoutModel.extras);
+        }
+        return Container();
+      },
+    );
   }
 
-  Widget buildList({required List<String> extras}) {
-    var list = extras;
+  Widget buildList({required List<Extra>? extras}) {
+    var list = extras ?? [];
     return ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         itemCount: list.length,
         itemBuilder: (BuildContext context, int index) {
-          return expertiseCard(list[index]);
+          return extrasCard(list[index]);
         });
   }
 
-  Widget expertiseCard(String radios) {
+  Widget extrasCard(Extra extra) {
     return Card(
       elevation: 2,
       child: Padding(
@@ -51,7 +69,7 @@ class _ExtrasState extends State<Extras> {
                   Row(
                     children: [
                       Text(
-                        radios,
+                        extra.name ?? '',
                         style: const TextStyle(
                             color: Colors.black,
                             fontSize: 14,
@@ -65,14 +83,7 @@ class _ExtrasState extends State<Extras> {
             Expanded(
               flex: 1,
               child: Column(
-                children: [
-                  Radio<String>(
-                    value: radios,
-                    groupValue: selectedRadio,
-                    activeColor: Colors.green,
-                    onChanged: (value) {},
-                  ),
-                ],
+                children: const [Text('cart')],
               ),
             )
           ],

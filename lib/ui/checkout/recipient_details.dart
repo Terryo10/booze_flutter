@@ -29,7 +29,7 @@ class _RecipientDetailsState extends State<RecipientDetails> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: textInput(
+            child: multilineInput(
               name: 'Additional Phone Number or Instructions',
             ),
           ),
@@ -40,6 +40,29 @@ class _RecipientDetailsState extends State<RecipientDetails> {
 
   TextField textInput({required String name}) {
     return TextField(
+      decoration: InputDecoration(
+        hintText: name,
+        filled: true,
+        fillColor: Colors.blueGrey[50],
+        labelStyle: const TextStyle(fontSize: 12),
+        contentPadding: const EdgeInsets.only(left: 30),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.blueGrey.shade50),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.blueGrey.shade50),
+          borderRadius: BorderRadius.circular(15),
+        ),
+      ),
+    );
+  }
+
+  TextField multilineInput({required String name}) {
+    return TextField(
+      keyboardType: TextInputType.multiline,
+      minLines: 2,
+      maxLines: 5,
       decoration: InputDecoration(
         hintText: name,
         filled: true,

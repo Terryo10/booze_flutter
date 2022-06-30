@@ -5,7 +5,9 @@ import 'package:booze_flutter/ui/checkout/extras.dart';
 import 'package:booze_flutter/ui/checkout/payments/payments.dart';
 import 'package:booze_flutter/ui/checkout/recipient_details.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../bloc/checkout_bloc/checkout_bloc.dart';
 import '../components/header.dart';
 
 class Checkout extends StatefulWidget {
@@ -52,39 +54,48 @@ class _CheckoutState extends State<Checkout> {
     int isLastStep = steps().length - 1;
     return SingleChildScrollView(
       physics: const ClampingScrollPhysics(),
-      child: Column(
-        children: [
-          const Header(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height,
-              child: Stepper(
-                type: Responsive.isMobile(context)
-                    ? StepperType.vertical
-                    : StepperType.horizontal,
-                steps: steps(),
-                currentStep: currentStep,
-                onStepContinue: () {
-                  if (isLastStep == currentStep) {
-                  } else {
-                    setState(() {
-                      currentStep += 1;
-                    });
-                  }
-                },
-                onStepCancel: () {
-                  if (currentStep == isFirstStep) {
-                  } else {
-                    setState(() {
-                      currentStep -= 1;
-                    });
-                  }
-                },
-              ),
-            ),
-          )
-        ],
+      child: BlocBuilder<CheckoutBloc, CheckoutState>(
+        builder: (context, state) {
+          if (state is CheckoutLoadingState) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is CheckoutLoadedState) {
+            return Column(
+              children: [
+                const Header(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: Stepper(
+                      type: Responsive.isMobile(context)
+                          ? StepperType.vertical
+                          : StepperType.horizontal,
+                      steps: steps(),
+                      currentStep: currentStep,
+                      onStepContinue: () {
+                        if (isLastStep == currentStep) {
+                        } else {
+                          setState(() {
+                            currentStep += 1;
+                          });
+                        }
+                      },
+                      onStepCancel: () {
+                        if (currentStep == isFirstStep) {
+                        } else {
+                          setState(() {
+                            currentStep -= 1;
+                          });
+                        }
+                      },
+                    ),
+                  ),
+                )
+              ],
+            );
+          }
+          return const Center(child: Text('oops something happened retry')); 
+        },
       ),
     );
   }
