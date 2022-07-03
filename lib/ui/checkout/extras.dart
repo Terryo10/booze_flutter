@@ -1,8 +1,10 @@
-import 'dart:math';
-
+import 'package:booze_flutter/constants/app_strings/constants.dart';
 import 'package:booze_flutter/models/checkout/checkout_model.dart';
+import 'package:booze_flutter/models/checkout/extras_cart.dart';
+import 'package:booze_flutter/ui/shared/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../bloc/checkout_bloc/checkout_bloc.dart';
 
@@ -15,45 +17,35 @@ class Extras extends StatefulWidget {
 
 class _ExtrasState extends State<Extras> {
   String selectedRadio = 'Extra';
-  List<String> radios = [
-    'Ice',
-    'Tonic',
-    'Cranbery',
-    'Coke',
-    'Water',
-    'Lemonade',
-    'Ice',
-    'Tonic',
-    'Cranbery',
-    'Coke',
-    'Water',
-    'Lemonade',
-  ];
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CheckoutBloc, CheckoutState>(
       builder: (context, state) {
         if (state is CheckoutLoadedState) {
-          return buildList(extras: state.checkoutModel.extras);
+          return buildList(
+              extras: state.checkoutModel.extras, extraCart: state.extras);
         }
         return Container();
       },
     );
   }
 
-  Widget buildList({required List<Extra>? extras}) {
+  Widget buildList(
+      {required List<Extra>? extras, required List<ExtrasCart> extraCart}) {
     var list = extras ?? [];
     return ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         itemCount: list.length,
         itemBuilder: (BuildContext context, int index) {
-          return extrasCard(list[index]);
+          return extrasCard(extra: list[index]);
         });
   }
 
-  Widget extrasCard(Extra extra) {
+  Widget extrasCard({
+    required Extra extra,
+  }) {
     return Card(
       elevation: 2,
       child: Padding(
@@ -81,14 +73,93 @@ class _ExtrasState extends State<Extras> {
               ),
             ),
             Expanded(
-              flex: 1,
-              child: Column(
-                children: const [Text('cart')],
-              ),
-            )
+                flex: 1,
+                child: SizedBox(
+                  width: 41,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 3),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                          onTap: () {},
+                          child: Container(
+                            color: Colors.transparent,
+                            height: 31,
+                            alignment: Alignment.center,
+                            child: SvgPicture.asset(
+                              AssetConstants.subtractIcon,
+                              width: 13.5,
+                            ),
+                          ),
+                        ),
+                        BlocListener<CheckoutBloc, CheckoutState>(
+                          listener: (context, state) {
+                           if(state is CheckoutLoadedState){
+                             print('fired ${state.extras}');
+                           }
+                          },
+                          child: BlocBuilder<CheckoutBloc, CheckoutState>(
+                            builder: (context, state) {
+                              if (state is CheckoutLoadedState) {
+                                return Text(
+                                    '${extraCount(extraId: extra.id, extras: state.extras)}');
+                              } else {
+                                return Text(
+                                  '0',
+                                  style: paragraph4,
+                                );
+                              }
+                            },
+                          ),
+                        ),
+                        BlocBuilder<CheckoutBloc, CheckoutState>(
+                          builder: (context, state) {
+                            if (state is CheckoutLoadedState) {
+                              return InkWell(
+                                onTap: () {
+                                  BlocProvider.of<CheckoutBloc>(context).add(
+                                    AddExtras(
+                                        checkoutDetailsModel:
+                                            state.checkoutModel,
+                                        extra: extra,
+                                        extraCart: state.extras),
+                                  );
+                                },
+                                child: Container(
+                                  color: Colors.transparent,
+                                  height: 31,
+                                  alignment: Alignment.center,
+                                  child: SvgPicture.asset(
+                                    AssetConstants.addIcon,
+                                    width: 13.5,
+                                  ),
+                                ),
+                              );
+                            }
+                            return Container();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ))
           ],
         ),
       ),
     );
+  }
+
+  int extraCount({required int? extraId, required List<ExtrasCart> extras}) {
+    if (extras.isNotEmpty) {
+      for (var element in extras) {
+        if (element.extra.id == extraId) {
+          print(element.quantity);
+          return element.quantity;
+        }
+      }
+    }
+    print('pakaipa');
+    return 0;
   }
 }

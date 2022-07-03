@@ -13,11 +13,12 @@ class CheckoutLoadingState extends CheckoutState {}
 
 class CheckoutLoadedState extends CheckoutState {
   final CheckoutDetailsModel checkoutModel;
+  final List<ExtrasCart> extras;
 
-  const CheckoutLoadedState(this.checkoutModel);
+  const CheckoutLoadedState({ required this.checkoutModel, required this.extras});
 
   @override
-  List<Object> get props => [checkoutModel];
+  List<Object> get props => [checkoutModel, extras];
 }
 
 class CheckoutErrorState extends CheckoutState {
