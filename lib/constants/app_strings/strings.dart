@@ -7,4 +7,5 @@ class Strings {
   static const String registerUrl = "/register";
   static const String categoriesrUrl = '/categories';
   static const String productsUrl = '/products';
+   static const String checkoutDetailsurl = '/get_checkout_resources';
 }

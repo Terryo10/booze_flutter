@@ -1,8 +1,13 @@
 import 'package:booze_flutter/responsive/responsive.dart';
 import 'package:booze_flutter/ui/body_builder.dart';
+import 'package:booze_flutter/ui/checkout/delivery.dart';
+import 'package:booze_flutter/ui/checkout/extras.dart';
+import 'package:booze_flutter/ui/checkout/payments/payments.dart';
 import 'package:booze_flutter/ui/checkout/recipient_details.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../bloc/checkout_bloc/checkout_bloc.dart';
 import '../components/header.dart';
 
 class Checkout extends StatefulWidget {
@@ -21,10 +26,10 @@ class _CheckoutState extends State<Checkout> {
 
   List<Step> steps() {
     return [
-       Step(
+      Step(
           isActive: currentStep >= 0,
           title: const FittedBox(child: Text('Extras')),
-          content: const RecipientDetails()),
+          content: const Extras()),
       Step(
           isActive: currentStep >= 1,
           title: const FittedBox(child: Text('Recipient Details')),
@@ -32,11 +37,11 @@ class _CheckoutState extends State<Checkout> {
       Step(
           isActive: currentStep >= 2,
           title: const FittedBox(child: Text('Choose Payment')),
-          content: const RecipientDetails()),
+          content: const Payments()),
       Step(
           isActive: currentStep >= 3,
           title: const FittedBox(child: Text('Delivery Times')),
-          content: const RecipientDetails()),
+          content: const Delivery()),
       Step(
           isActive: currentStep >= 4,
           title: const FittedBox(child: Text('Confirm Order')),
@@ -46,46 +51,51 @@ class _CheckoutState extends State<Checkout> {
 
   SingleChildScrollView checkoutBody() {
     int isFirstStep = 0;
-    int isLastStep = steps().length -1;
+    int isLastStep = steps().length - 1;
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          const Header(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              height: 400,
-              child: Stepper(
-                type: Responsive.isMobile(context)
-                    ? StepperType.vertical
-                    : StepperType.horizontal,
-                steps: steps(),
-                currentStep: currentStep,
-                onStepContinue: () {
-                  if(isLastStep == currentStep){
-                  
-                  }else{
-                       setState(() {
-                    currentStep += 1;
-                  });
-                  }
-                 
-                },
-                onStepCancel: () {
-                  if(currentStep ==isFirstStep){
-
-                  }else{
-                     setState(() {
-                    currentStep -= 1;
-                  });
-                  }
-                 
-                  
-                },
-              ),
-            ),
-          )
-        ],
+      physics: const ClampingScrollPhysics(),
+      child: BlocBuilder<CheckoutBloc, CheckoutState>(
+        builder: (context, state) {
+          if (state is CheckoutLoadingState) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is CheckoutLoadedState) {
+            return Column(
+              children: [
+                const Header(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: Stepper(
+                      type: Responsive.isMobile(context)
+                          ? StepperType.vertical
+                          : StepperType.horizontal,
+                      steps: steps(),
+                      currentStep: currentStep,
+                      onStepContinue: () {
+                        if (isLastStep == currentStep) {
+                        } else {
+                          setState(() {
+                            currentStep += 1;
+                          });
+                        }
+                      },
+                      onStepCancel: () {
+                        if (currentStep == isFirstStep) {
+                        } else {
+                          setState(() {
+                            currentStep -= 1;
+                          });
+                        }
+                      },
+                    ),
+                  ),
+                )
+              ],
+            );
+          }
+          return const Center(child: Text('oops something happened retry')); 
+        },
       ),
     );
   }

@@ -8,6 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../bloc/auth/auth_bloc.dart';
 import '../bloc/categories/categories_bloc.dart';
+import '../bloc/checkout_bloc/checkout_bloc.dart';
+import '../repositories/checkout/checkout_repository.dart';
 
 class AppBlocs extends StatelessWidget {
   final Widget app;
@@ -45,7 +47,16 @@ class AppBlocs extends StatelessWidget {
             CartStarted(),
           ),
         lazy: false,
-      )
+      ),
+      BlocProvider(
+        create: (context) => CheckoutBloc(
+          checkoutRepository:
+              RepositoryProvider.of<CheckoutRepository>(context),
+        )..add(
+          GetcheckoutDetailsEvent(),
+        ),
+        lazy: false,
+      ),
     ], child: app);
   }
 }
