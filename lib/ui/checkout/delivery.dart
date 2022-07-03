@@ -13,11 +13,7 @@ class Delivery extends StatefulWidget {
 
 class _DeliveryState extends State<Delivery> {
   String selectedRadio = 'Extra';
-  List<String> radios = [
-    'Express Today 30minutes to you (\$ 2.00)',
-    '1 hour to you  (\$ 1.00)',
-    '3 days to you  (\$ 0.50)',
-  ];
+ 
 
   @override
   Widget build(BuildContext context) {

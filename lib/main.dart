@@ -18,7 +18,6 @@ void main() {
       ), storage: storage,
     ), storage: storage,
   );
-
   runApp(appConfig);
 }
 
