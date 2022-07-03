@@ -81,23 +81,37 @@ class _ExtrasState extends State<Extras> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        InkWell(
-                          onTap: () {},
-                          child: Container(
-                            color: Colors.transparent,
-                            height: 31,
-                            alignment: Alignment.center,
-                            child: SvgPicture.asset(
-                              AssetConstants.subtractIcon,
-                              width: 13.5,
-                            ),
-                          ),
+                        BlocBuilder<CheckoutBloc, CheckoutState>(
+                          builder: (context, state) {
+                             if (state is CheckoutLoadedState) {
+                            return InkWell(
+                              onTap: () {
+                                BlocProvider.of<CheckoutBloc>(context).add(
+                                  RemoveExtras(
+                                      checkoutDetailsModel: state.checkoutModel,
+                                      extra: extra,
+                                      extraCart: state.extras),
+                                );
+                              },
+                              child: Container(
+                                color: Colors.transparent,
+                                height: 31,
+                                alignment: Alignment.center,
+                                child: SvgPicture.asset(
+                                  AssetConstants.subtractIcon,
+                                  width: 13.5,
+                                ),
+                              ),
+                            );}
+                            return Container();
+                          },
+                          
                         ),
                         BlocListener<CheckoutBloc, CheckoutState>(
                           listener: (context, state) {
-                           if(state is CheckoutLoadedState){
-                             print('fired ${state.extras}');
-                           }
+                            if (state is CheckoutLoadedState) {
+                              print('fired ${state.extras}');
+                            }
                           },
                           child: BlocBuilder<CheckoutBloc, CheckoutState>(
                             builder: (context, state) {

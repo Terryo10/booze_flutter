@@ -40,5 +40,25 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
       }
   
     });
+
+    on<RemoveExtras>((event, emit) async {
+      emit(CheckoutLoadingState());
+      try{
+            List<ExtrasCart> extraCart = event.extraCart;
+   
+       var contain = extraCart.where((element) => element.extra.id == event.extra.id);
+       if(contain.isEmpty){
+          extraCart.add(ExtrasCart(extra: event.extra, quantity: 1));
+       }else{
+         //increment
+          contain.first.quantity = contain.first.quantity -1 ;
+       }
+      emit(CheckoutLoadedState(
+          checkoutModel: event.checkoutDetailsModel, extras: extraCart));
+      }catch(e){
+        throw"";
+      }
+  
+    });
   }
 }

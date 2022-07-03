@@ -21,5 +21,14 @@ class AddExtras extends CheckoutEvent{
   List<Object> get props => [extra];
 
 }
+class RemoveExtras extends CheckoutEvent{
+  final CheckoutDetailsModel checkoutDetailsModel;
+  final Extra extra;
+  final List<ExtrasCart> extraCart; 
+  const RemoveExtras({required this.extraCart, required this.checkoutDetailsModel, required this.extra});
+    @override
+  List<Object> get props => [extra];
+
+}
 
 
