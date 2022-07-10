@@ -110,7 +110,7 @@ class _ExtrasState extends State<Extras> {
                         BlocListener<CheckoutBloc, CheckoutState>(
                           listener: (context, state) {
                             if (state is CheckoutLoadedState) {
-                              print('fired ${state.extras}');
+                              
                             }
                           },
                           child: BlocBuilder<CheckoutBloc, CheckoutState>(
@@ -168,12 +168,11 @@ class _ExtrasState extends State<Extras> {
     if (extras.isNotEmpty) {
       for (var element in extras) {
         if (element.extra.id == extraId) {
-          print(element.quantity);
           return element.quantity;
         }
       }
     }
-    print('pakaipa');
+   
     return 0;
   }
 }

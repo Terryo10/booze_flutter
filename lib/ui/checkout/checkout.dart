@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/checkout_bloc/checkout_bloc.dart';
 import '../components/header.dart';
+import 'order_confirmation.dart';
 
 class Checkout extends StatefulWidget {
   const Checkout({Key? key}) : super(key: key);
@@ -45,7 +46,7 @@ class _CheckoutState extends State<Checkout> {
       Step(
           isActive: currentStep >= 4,
           title: const FittedBox(child: Text('Confirm Order')),
-          content: const RecipientDetails()),
+          content: const OrderConfirmation()),
     ];
   }
 

@@ -55,7 +55,7 @@ class _DeliveryState extends State<Delivery> {
                     children: [
                       FittedBox(
                         child: Text(
-                          '${deliveryTime.title } (${deliveryTime.type})',
+                          '${deliveryTime.title }',
                           style: const TextStyle(
                               color: Colors.black,
                               fontSize: 14,
