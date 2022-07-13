@@ -83,35 +83,36 @@ class _ExtrasState extends State<Extras> {
                       children: [
                         BlocBuilder<CheckoutBloc, CheckoutState>(
                           builder: (context, state) {
-                             if (state is CheckoutLoadedState) {
-                            return InkWell(
-                              onTap: () {
-                                BlocProvider.of<CheckoutBloc>(context).add(
-                                  RemoveExtras(
-                                      checkoutDetailsModel: state.checkoutModel,
-                                      extra: extra,
-                                      extraCart: state.extras),
-                                );
-                              },
-                              child: Container(
-                                color: Colors.transparent,
-                                height: 31,
-                                alignment: Alignment.center,
-                                child: SvgPicture.asset(
-                                  AssetConstants.subtractIcon,
-                                  width: 13.5,
+                            if (state is CheckoutLoadedState) {
+                              return InkWell(
+                                onTap: () {
+                                  BlocProvider.of<CheckoutBloc>(context).add(
+                                    RemoveExtras(
+                                        address: state.address,
+                                        checkoutDetailsModel:
+                                            state.checkoutModel,
+                                        extra: extra,
+                                        extraCart: state.extras,
+                                        paymentMethod: state.paymentMethod),
+                                  );
+                                },
+                                child: Container(
+                                  color: Colors.transparent,
+                                  height: 31,
+                                  alignment: Alignment.center,
+                                  child: SvgPicture.asset(
+                                    AssetConstants.subtractIcon,
+                                    width: 13.5,
+                                  ),
                                 ),
-                              ),
-                            );}
+                              );
+                            }
                             return Container();
                           },
-                          
                         ),
                         BlocListener<CheckoutBloc, CheckoutState>(
                           listener: (context, state) {
-                            if (state is CheckoutLoadedState) {
-                              
-                            }
+                            if (state is CheckoutLoadedState) {}
                           },
                           child: BlocBuilder<CheckoutBloc, CheckoutState>(
                             builder: (context, state) {
@@ -134,10 +135,12 @@ class _ExtrasState extends State<Extras> {
                                 onTap: () {
                                   BlocProvider.of<CheckoutBloc>(context).add(
                                     AddExtras(
+                                        address: state.address,
                                         checkoutDetailsModel:
                                             state.checkoutModel,
                                         extra: extra,
-                                        extraCart: state.extras),
+                                        extraCart: state.extras,
+                                        paymentMethod: state.paymentMethod),
                                   );
                                 },
                                 child: Container(
@@ -172,7 +175,7 @@ class _ExtrasState extends State<Extras> {
         }
       }
     }
-   
+
     return 0;
   }
 }

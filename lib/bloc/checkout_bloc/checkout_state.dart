@@ -15,9 +15,11 @@ class CheckoutLoadedState extends CheckoutState {
   final CheckoutDetailsModel checkoutModel;
   final List<ExtrasCart> extras;
   final Address address;
+  final PaymentMethod paymentMethod;
 
   const CheckoutLoadedState(
-      {required this.address,
+      {
+        required this.paymentMethod, required this.address,
       required this.checkoutModel,
       required this.extras});
 

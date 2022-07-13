@@ -50,6 +50,7 @@ class AppBlocs extends StatelessWidget {
       ),
       BlocProvider(
         create: (context) => CheckoutBloc(
+          cartBloc: BlocProvider.of<CartBloc>(context),
           checkoutRepository:
               RepositoryProvider.of<CheckoutRepository>(context),
         )..add(

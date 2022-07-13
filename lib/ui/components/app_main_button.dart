@@ -26,14 +26,14 @@ class AppMainButton extends StatelessWidget {
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
             colors: [
-              appGreenSecondary,
-              appGreenColor,
+              Colors.black,
+              Color.fromARGB(196, 0, 0, 0),
             ],
           ),
           borderRadius: BorderRadius.circular(5),
           boxShadow: [
             BoxShadow(
-              color: appGreenColor.withOpacity(0.25),
+              color: Colors.black.withOpacity(0.25),
               offset: const Offset(0, 10),
               blurRadius: 9,
             ),
@@ -48,10 +48,12 @@ class AppMainButton extends StatelessWidget {
                   ),
                 ),
               )
-            : Text(
-                text,
-                style: heading7,
-              ),
+            : FittedBox(
+              child: Text(
+                  text,
+                  style: heading7,
+                ),
+            ),
       ),
     );
   }

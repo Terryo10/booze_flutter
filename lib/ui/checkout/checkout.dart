@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/checkout_bloc/checkout_bloc.dart';
+import '../components/app_main_button.dart';
 import '../components/header.dart';
 import 'order_confirmation.dart';
 
@@ -51,8 +52,6 @@ class _CheckoutState extends State<Checkout> {
   }
 
   SingleChildScrollView checkoutBody() {
-    int isFirstStep = 0;
-    int isLastStep = steps().length - 1;
     return SingleChildScrollView(
       physics: const ClampingScrollPhysics(),
       child: BlocBuilder<CheckoutBloc, CheckoutState>(
@@ -67,37 +66,127 @@ class _CheckoutState extends State<Checkout> {
                   padding: const EdgeInsets.all(8.0),
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height,
-                    child: Stepper(
-                      type: Responsive.isMobile(context)
-                          ? StepperType.vertical
-                          : StepperType.horizontal,
-                      steps: steps(),
-                      currentStep: currentStep,
-                      onStepContinue: () {
-                        if (isLastStep == currentStep) {
-                        } else {
-                          setState(() {
-                            currentStep += 1;
-                          });
-                        }
-                      },
-                      onStepCancel: () {
-                        if (currentStep == isFirstStep) {
-                        } else {
-                          setState(() {
-                            currentStep -= 1;
-                          });
-                        }
-                      },
+                    child: Theme(
+                      data: ThemeData(
+                        colorScheme:
+                            const ColorScheme.light(primary: Colors.black),
+                      ),
+                      child: Stepper(
+                        type: Responsive.isMobile(context)
+                            ? StepperType.vertical
+                            : StepperType.horizontal,
+                        steps: steps(),
+                        currentStep: currentStep,
+                        onStepContinue: () {
+                          stepNext(state: state);
+                        },
+                        onStepCancel: () {
+                          stepBack();
+                        },
+                        controlsBuilder:
+                            (context, ControlsDetails controlsDetails) {
+                          List<Widget> buttons = [];
+                          if (controlsDetails.stepIndex == 0) {
+                            buttons = [
+                              SizedBox(
+                                width: 200,
+                                child: AppMainButton(
+                                    onTap: () {
+                                      controlsDetails.onStepContinue!();
+                                    },
+                                    text: 'Continue'),
+                              ),
+                            ];
+                          } else{
+                            buttons = [
+                              SizedBox(
+                                width: Responsive.isMobile(context) ? 100 : 200,
+                                child: AppMainButton(
+                                  onTap: () {
+                                    controlsDetails.onStepCancel!();
+                                  },
+                                  text: 'Go Back',
+                                ),
+                              ),
+                              SizedBox(
+                                width: Responsive.isMobile(context) ? 100 : 200,
+                                child: AppMainButton(
+                                  onTap: () {
+                                    controlsDetails.onStepContinue!();
+                                  },
+                                  text: 'Continue',
+                                ),
+                              ),
+                            ];
+                          }
+                          return Row(
+                            children: [...buttons],
+                          );
+                        },
+                      ),
                     ),
                   ),
                 )
               ],
             );
           }
-          return const Center(child: Text('oops something happened retry')); 
+          return const Center(child: Text('oops something happened retry'));
         },
       ),
     );
+  }
+
+  void stepNext({required CheckoutLoadedState state}) {
+    //notice steps and avoid continity
+    int isLastStep = steps().length - 1;
+    if (isLastStep == currentStep) {
+    } else if (currentStep == 1) {
+      //address details
+      if (state.address.name.isNotEmpty &&
+          state.address.phoneNumber.isNotEmpty &&
+          state.address.street.isNotEmpty &&
+          state.address.cityId != null) {
+        RegExp regExp = RegExp(r'(\+263|0)7[7-8|1|3][0-9]{7}$');
+        if (regExp.hasMatch(state.address.phoneNumber)) {
+          setState(() {
+            currentStep += 1;
+          });
+          //procced
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Please enter a valid phone number ',
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
+        }
+      } else {
+        //do nothing
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Fill in mandatory fields to proceed ',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
+    } else {
+      setState(() {
+        currentStep += 1;
+      });
+    }
+  }
+
+  void stepBack() {
+    int isFirstStep = 0;
+    if (currentStep == isFirstStep) {
+    } else {
+      setState(() {
+        currentStep -= 1;
+      });
+    }
   }
 }

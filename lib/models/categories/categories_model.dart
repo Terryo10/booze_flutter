@@ -102,7 +102,7 @@ class Product {
   String? title;
   String? description;
   int? quantity;
-  int? price;
+  num? price;
   int? oldPrice;
   String? unit;
   int? subcategoriesId;

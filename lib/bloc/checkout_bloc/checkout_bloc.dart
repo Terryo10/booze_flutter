@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:booze_flutter/bloc/cart_bloc/cart_bloc.dart';
 import 'package:booze_flutter/models/checkout/checkout_model.dart';
 import 'package:booze_flutter/models/checkout/extras_cart.dart';
 import 'package:booze_flutter/repositories/checkout/checkout_repository.dart';
@@ -11,7 +12,9 @@ part 'checkout_state.dart';
 
 class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
   final CheckoutRepository checkoutRepository;
-  CheckoutBloc({required this.checkoutRepository}) : super(CheckoutInitial()) {
+  final CartBloc cartBloc;
+  CheckoutBloc({required this.cartBloc, required this.checkoutRepository}) : super(CheckoutInitial()) {
+   
     on<GetcheckoutDetailsEvent>((event, emit) async {
       emit(CheckoutLoadingState());
       List<ExtrasCart> extraCart = [];
@@ -20,12 +23,8 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
           CheckoutLoadedState(
             checkoutModel: checkoutModel,
             extras: extraCart,
-            address: Address(
-              cityId: 1,
-              name: 'New York',
-              street: '123 Main St',
-              phoneNumber: '10001',
-            ),
+            address: Address(),
+            paymentMethod: PaymentMethod(),
           ),
         );
       }).catchError((error) {
@@ -46,35 +45,61 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
           //increment
           contain.first.quantity = contain.first.quantity + 1;
         }
-        //add extra to state
         emit(CheckoutLoadedState(
-            checkoutModel: event.checkoutDetailsModel, extras: extraCart));
+            checkoutModel: event.checkoutDetailsModel,
+            extras: extraCart,
+            address: event.address,
+            paymentMethod: event.paymentMethod));
       } catch (e) {
         throw "";
       }
     });
 
-    on<RemoveExtras>((event, emit) async {
-      emit(CheckoutLoadingState());
-      try {
-        List<ExtrasCart> extraCart = event.extraCart;
+    on<RemoveExtras>(
+      (event, emit) async {
+        emit(CheckoutLoadingState());
+        try {
+          List<ExtrasCart> extraCart = event.extraCart;
 
-        var contain =
-            extraCart.where((element) => element.extra.id == event.extra.id);
-        if (contain.isEmpty) {
-        } else {
-          //increment
-          if (contain.first.quantity <= 1) {
-            extraCart.remove(contain.first);
+          var contain =
+              extraCart.where((element) => element.extra.id == event.extra.id);
+          if (contain.isEmpty) {
           } else {
-            contain.first.quantity = contain.first.quantity - 1;
+            //increment
+            if (contain.first.quantity <= 1) {
+              extraCart.remove(contain.first);
+            } else {
+              contain.first.quantity = contain.first.quantity - 1;
+            }
           }
+          emit(CheckoutLoadedState(
+              checkoutModel: event.checkoutDetailsModel,
+              extras: extraCart,
+              address: event.address,
+              paymentMethod: event.paymentMethod));
+        } catch (e) {
+          throw "";
         }
-        emit(CheckoutLoadedState(
-            checkoutModel: event.checkoutDetailsModel, extras: extraCart));
-      } catch (e) {
-        throw "";
-      }
-    });
+      },
+    );
+
+    on<AddAddress>(
+      (event, emit) {
+        print('firing');
+        emit(CheckoutLoadingState());
+        try {
+          emit(
+            CheckoutLoadedState(
+              checkoutModel: event.checkoutDetailsModel,
+              extras: event.extraCart,
+              address: event.address,
+              paymentMethod: PaymentMethod(),
+            ),
+          );
+        } catch (error) {
+          emit(CheckoutErrorState(error.toString()));
+        }
+      },
+    );
   }
 }

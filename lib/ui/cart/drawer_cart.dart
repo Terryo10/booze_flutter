@@ -11,7 +11,6 @@ import 'package:intl/intl.dart';
 import '../../constants/app_strings/constants.dart';
 import '../../constants/app_strings/strings.dart';
 
-
 class DrawerCart extends StatefulWidget {
   const DrawerCart({Key? key}) : super(key: key);
 
@@ -33,7 +32,7 @@ class _DrawerCartState extends State<DrawerCart> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    const SizedBox(height:20),
+                    const SizedBox(height: 20),
                     header(),
                     ...slidable(cartItems, context, currencyFormat),
                     const ShippingWithCosts()
@@ -61,7 +60,7 @@ class _DrawerCartState extends State<DrawerCart> {
               'Shopping Cart',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.green,
+                  color: Colors.black,
                   fontSize: 20),
             ),
           ),
@@ -87,7 +86,7 @@ class _DrawerCartState extends State<DrawerCart> {
                 },
                 child: Container(
                   margin: const EdgeInsets.only(top: 11),
-                  width: 50,//(screenWidth(context) * 0.22) - 17,
+                  width: 50, //(screenWidth(context) * 0.22) - 17,
                   alignment: Alignment.center,
                   color: appRedColor,
                   child: Image.asset(
