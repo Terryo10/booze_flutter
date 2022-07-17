@@ -85,7 +85,6 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
 
     on<AddAddress>(
       (event, emit) {
-        print('firing');
         emit(CheckoutLoadingState());
         try {
           emit(
