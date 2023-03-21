@@ -173,6 +173,22 @@ class _CheckoutState extends State<Checkout> {
           ),
         );
       }
+    }else if(currentStep == 2){
+      if(state.paymentMethod.id !=  null){
+        setState(() {
+        currentStep += 1;
+      });
+      }else{
+         ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Please Select Payment Method To Procced ',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
+
     } else {
       setState(() {
         currentStep += 1;

@@ -16,6 +16,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   final FlutterSecureStorage storage;
   CartBloc(this.storage) : super(CartInitial()) {
     int cartCount = 0;
+    num totalPrice = 0;
 
     on<AddToCart>((event, emit) async {
       emit(CartLoadingState());
@@ -41,7 +42,12 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             //value is in cart
             String? obj = jsonEncode(storageCartItems);
             storage.write(key: 'cartItems', value: obj);
+            for (var element in storageCartItems) {
+              totalPrice =
+                  (element.product.price! * element.quantity);
+            }
             emit(CartLoadedState(
+                total: double.parse(totalPrice.toString()),
                 cartItems: storageCartItems,
                 cartCount: cartCount + storageCartItems.length));
           } else {
@@ -49,7 +55,12 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
             String? obj = jsonEncode(storageCartItems);
             storage.write(key: 'cartItems', value: obj);
+            for (var element in storageCartItems) {
+              totalPrice =
+                  (element.product.price! * element.quantity);
+            }
             emit(CartLoadedState(
+                total: double.parse(totalPrice.toString()),
                 cartItems: storageCartItems,
                 cartCount: cartCount + storageCartItems.length));
           }
@@ -64,7 +75,11 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         //value is in cart
         String? obj = jsonEncode(storageCartItems);
         storage.write(key: 'cartItems', value: obj);
+        for (var element in storageCartItems) {
+          totalPrice = (element.product.price! * element.quantity);
+        }
         emit(CartLoadedState(
+            total: double.parse(totalPrice.toString()),
             cartItems: storageCartItems,
             cartCount: cartCount + storageCartItems.length));
       }
@@ -84,7 +99,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
                 product: Product.fromJson(element["product"]),
                 quantity: element["quantity"]));
           }
-
           var contain = storageCartItems
               .where((element) => element.product.id == event.product.id);
           if (contain.isEmpty) {
@@ -97,7 +111,11 @@ class CartBloc extends Bloc<CartEvent, CartState> {
               value.quantity = value.quantity - 1;
               String? obj = jsonEncode(storageCartItems);
               storage.write(key: 'cartItems', value: obj);
+              for (var element in storageCartItems) {
+                totalPrice = (element.product.price! * element.quantity);
+              }
               emit(CartLoadedState(
+                  total: double.parse(totalPrice.toString()),
                   cartItems: storageCartItems,
                   cartCount: cartCount + storageCartItems.length));
             } else {
@@ -106,7 +124,12 @@ class CartBloc extends Bloc<CartEvent, CartState> {
                   (element) => element.product.id == event.product.id);
               String? obj = jsonEncode(storageCartItems);
               storage.write(key: 'cartItems', value: obj);
+              if (kDebugMode) {
+                print(storageCartItems.length);
+              }
+             
               emit(CartLoadedState(
+                  total: double.parse(totalPrice.toString()),
                   cartItems: storageCartItems,
                   cartCount: cartCount + storageCartItems.length));
             }
@@ -133,8 +156,11 @@ class CartBloc extends Bloc<CartEvent, CartState> {
                   product: Product.fromJson(element["product"]),
                   quantity: element["quantity"]));
             }
-
+            for (var element in storageCartItems) {
+              totalPrice = (element.product.price! * element.quantity);
+            }
             emit(CartLoadedState(
+                total: double.parse(totalPrice.toString()),
                 cartItems: storageCartItems,
                 cartCount: cartCount + storageCartItems.length));
           } catch (e) {
@@ -143,7 +169,11 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             }
           }
         } else {
+          for (var element in storageCartItems) {
+            totalPrice = (element.product.price! * element.quantity);
+          }
           emit(CartLoadedState(
+              total: double.parse(totalPrice.toString()),
               cartItems: storageCartItems,
               cartCount: cartCount + storageCartItems.length));
         }
@@ -175,8 +205,12 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             String? obj = jsonEncode(storageCartItems);
             storage.write(key: 'cartItems', value: obj);
           }
+          for (var element in storageCartItems) {
+            totalPrice = (element.product.price! * element.quantity);
+          }
 
           emit(CartLoadedState(
+              total: double.parse(totalPrice.toString()),
               cartItems: storageCartItems,
               cartCount: cartCount + storageCartItems.length));
         } catch (e) {
@@ -185,7 +219,11 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           }
         }
       } else {
+        for (var element in storageCartItems) {
+          totalPrice = (element.product.price! * element.quantity);
+        }
         emit(CartLoadedState(
+            total: double.parse(totalPrice.toString()),
             cartItems: storageCartItems,
             cartCount: cartCount + storageCartItems.length));
       }

@@ -12,33 +12,45 @@ class Payments extends StatefulWidget {
 }
 
 class _PaymentsState extends State<Payments> {
-  String selectedRadio = 'Ecocash';
- 
+  String? selectedRadio;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CheckoutBloc, CheckoutState>(
-      builder: (context, state) {
+    return BlocListener<CheckoutBloc, CheckoutState>(
+      listener: (context, state) {
         if (state is CheckoutLoadedState) {
-          return buildList(paymentMethods: state.checkoutModel.paymentMethods);
+          selectedRadio = state.paymentMethod.name ?? '';
         }
-        return Container();
       },
+      child: BlocBuilder<CheckoutBloc, CheckoutState>(
+        builder: (context, state) {
+          if (state is CheckoutLoadedState) {
+            return buildList(
+                paymentMethods: state.checkoutModel.paymentMethods,
+                checkoutLoadedState: state);
+          }
+          return Container();
+        },
+      ),
     );
   }
 
-  Widget buildList({required List<PaymentMethod> ? paymentMethods}) {
+  Widget buildList(
+      {required List<PaymentMethod>? paymentMethods,
+      required CheckoutLoadedState checkoutLoadedState}) {
     var list = paymentMethods ?? [];
     return ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         itemCount: list.length,
         itemBuilder: (BuildContext context, int index) {
-          return paymentsCard(list[index]);
+          return paymentsCard(list[index],
+              checkoutLoadedState: checkoutLoadedState);
         });
   }
 
-  Widget paymentsCard(PaymentMethod paymentMethod) {
+  Widget paymentsCard(PaymentMethod paymentMethod,
+      {required CheckoutLoadedState checkoutLoadedState}) {
     return Card(
       elevation: 2,
       child: Padding(
@@ -73,7 +85,16 @@ class _PaymentsState extends State<Payments> {
                     value: paymentMethod.name ?? '',
                     groupValue: selectedRadio,
                     activeColor: Colors.black,
-                    onChanged: (value) {},
+                    onChanged: (value) {
+                      //add to bloc
+                      BlocProvider.of<CheckoutBloc>(context).add(
+                          AddPaymentMethod(
+                              address: checkoutLoadedState.address,
+                              paymentMethod: paymentMethod,
+                              extraCart: checkoutLoadedState.extras,
+                              checkoutDetailsModel:
+                                  checkoutLoadedState.checkoutModel));
+                    },
                   ),
                 ],
               ),

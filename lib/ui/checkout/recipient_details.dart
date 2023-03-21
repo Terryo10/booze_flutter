@@ -21,86 +21,93 @@ class _RecipientDetailsState extends State<RecipientDetails> {
   Suburb? selectedSuburb;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CheckoutBloc, CheckoutState>(
-      builder: (context, state) {
+    return BlocListener<CheckoutBloc, CheckoutState>(
+      listener: (context, state) {
         if (state is CheckoutLoadedState) {
-          return SizedBox(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(children: [
-                    Expanded(
-                      child: textInput(
-                        name: 'Recipient Name (required)',
-                        type: TextInputType.none,
-                        formatters: [],
-                        textEditingController: recipientNameController,
-                        state: state,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Expanded(
-                      child: textInput(
-                        name: 'Zimbabwean Phone Number (required)',
-                        type: TextInputType.number,
-                        formatters: [
-                          LengthLimitingTextInputFormatter(10),
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        textEditingController: phoneNumberController,
-                        state: state,
-                      ),
-                    ),
-                  ]),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: textInput(
-                    name: 'Street Address (required)',
-                    type: TextInputType.none,
-                    formatters: [],
-                    textEditingController: streetAddressController,
-                    state: state,
-                  ),
-                ),
-                DropdownButton<Suburb>(
-                  hint: selectedSuburb == null
-                      ? const Text('Select Your Suburb (required) ')
-                      : Text(
-                          selectedSuburb?.name ?? '',
-                        ),
-                  items: state.checkoutModel.suburbs!.map((Suburb value) {
-                    return DropdownMenuItem<Suburb>(
-                      value: value,
-                      child: Text(value.name ?? ''),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    // selectedSuburb
-                    setState(() {
-                      selectedSuburb = value;
-                    });
-                    changeTextState(state);
-                  },
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: multilineInput(
-                    state: state,
-                    name:
-                        'Additional Phone Number or Instructions E.G bring me 20 dollars change',
-                  ),
-                ),
-              ],
-            ),
-          );
-        } else {
-          return const SizedBox();
+         
         }
       },
+      child: BlocBuilder<CheckoutBloc, CheckoutState>(
+        builder: (context, state) {
+          if (state is CheckoutLoadedState) {
+            return SizedBox(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(children: [
+                      Expanded(
+                        child: textInput(
+                          name: 'Recipient Name (required)',
+                          type: TextInputType.none,
+                          formatters: [],
+                          textEditingController: recipientNameController,
+                          state: state,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Expanded(
+                        child: textInput(
+                          name: 'Zimbabwean Phone Number (required)',
+                          type: TextInputType.number,
+                          formatters: [
+                            LengthLimitingTextInputFormatter(10),
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          textEditingController: phoneNumberController,
+                          state: state,
+                        ),
+                      ),
+                    ]),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: textInput(
+                      name: 'Street Address (required)',
+                      type: TextInputType.none,
+                      formatters: [],
+                      textEditingController: streetAddressController,
+                      state: state,
+                    ),
+                  ),
+                  DropdownButton<Suburb>(
+                    hint: selectedSuburb == null
+                        ? const Text('Select Your Suburb (required) ')
+                        : Text(
+                            selectedSuburb?.name ?? '',
+                          ),
+                    items: state.checkoutModel.suburbs!.map((Suburb value) {
+                      return DropdownMenuItem<Suburb>(
+                        value: value,
+                        child: Text(value.name ?? ''),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      // selectedSuburb
+                      setState(() {
+                        selectedSuburb = value;
+                      });
+                      changeTextState(state);
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: multilineInput(
+                      state: state,
+                      name:
+                          'Additional Phone Number or Instructions E.G bring me 20 dollars change',
+                    ),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            return const SizedBox();
+          }
+        },
+      ),
     );
   }
 

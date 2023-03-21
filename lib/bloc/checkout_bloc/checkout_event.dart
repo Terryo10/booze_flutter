@@ -17,10 +17,10 @@ class AddExtras extends CheckoutEvent {
   final Extra extra;
   final List<ExtrasCart> extraCart;
   final Address address;
-   final PaymentMethod paymentMethod;
+  final PaymentMethod paymentMethod;
   const AddExtras(
       {required this.paymentMethod,
-        required this.extraCart,
+      required this.extraCart,
       required this.checkoutDetailsModel,
       required this.extra,
       required this.address});
@@ -35,8 +35,8 @@ class RemoveExtras extends CheckoutEvent {
   final Address address;
   final PaymentMethod paymentMethod;
   const RemoveExtras(
-      {
-        required this.paymentMethod,required this.extraCart,
+      {required this.paymentMethod,
+      required this.extraCart,
       required this.checkoutDetailsModel,
       required this.extra,
       required this.address});
@@ -48,9 +48,10 @@ class AddAddress extends CheckoutEvent {
   final CheckoutDetailsModel checkoutDetailsModel;
   final List<ExtrasCart> extraCart;
   final Address address;
-    final PaymentMethod paymentMethod;
+  final PaymentMethod paymentMethod;
   const AddAddress(
-      {required this.paymentMethod, required this.extraCart,
+      {required this.paymentMethod,
+      required this.extraCart,
       required this.checkoutDetailsModel,
       required this.address});
   @override
@@ -68,5 +69,6 @@ class AddPaymentMethod extends CheckoutEvent {
       required this.checkoutDetailsModel,
       required this.address});
   @override
-  List<Object> get props => [address];
+  List<Object> get props =>
+      [address, extraCart, checkoutDetailsModel, paymentMethod];
 }

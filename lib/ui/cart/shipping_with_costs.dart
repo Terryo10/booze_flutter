@@ -1,8 +1,7 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:booze_flutter/bloc/cart_bloc/cart_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../bloc/checkout_bloc/checkout_bloc.dart';
 import '../components/app_main_button.dart';
 import '../components/tittle_with_cost.dart';
 import '../shared/styles.dart';
@@ -12,9 +11,9 @@ class ShippingWithCosts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CheckoutBloc, CheckoutState>(
+    return BlocBuilder<CartBloc, CartState>(
       builder: (context, state) {
-        if (state is CheckoutLoadedState) {
+        if (state is CartLoadedState) {
           return Container(
             margin: const EdgeInsets.only(top: 13),
             constraints: const BoxConstraints(minHeight: 100),
@@ -25,7 +24,7 @@ class ShippingWithCosts extends StatelessWidget {
                 const SizedBox(height: 22),
                 TitleWithCost(
                   title: 'Subtotal',
-                  cost: 10,
+                  cost: state.total,
                   style: paragraph6,
                 ),
                 const SizedBox(height: 7),
@@ -38,7 +37,7 @@ class ShippingWithCosts extends StatelessWidget {
                 ),
                 TitleWithCost(
                   title: 'Total',
-                  cost: 32,
+                  cost: state.total,
                   style: paragraph5,
                 ),
                 const SizedBox(height: 16),

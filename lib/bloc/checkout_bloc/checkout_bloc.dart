@@ -13,8 +13,8 @@ part 'checkout_state.dart';
 class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
   final CheckoutRepository checkoutRepository;
   final CartBloc cartBloc;
-  CheckoutBloc({required this.cartBloc, required this.checkoutRepository}) : super(CheckoutInitial()) {
-   
+  CheckoutBloc({required this.cartBloc, required this.checkoutRepository})
+      : super(CheckoutInitial()) {
     on<GetcheckoutDetailsEvent>((event, emit) async {
       emit(CheckoutLoadingState());
       List<ExtrasCart> extraCart = [];
@@ -100,5 +100,22 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
         }
       },
     );
+
+    on<AddPaymentMethod>((event, emit) {
+        emit(CheckoutLoadingState());
+        try {
+          emit(
+            CheckoutLoadedState(
+              checkoutModel: event.checkoutDetailsModel,
+              extras: event.extraCart,
+              address: event.address,
+              paymentMethod: event.paymentMethod,
+            ),
+          );
+        } catch (error) {
+          emit(CheckoutErrorState(error.toString()));
+        }
+      
+    },);
   }
 }

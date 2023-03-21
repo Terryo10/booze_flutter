@@ -134,8 +134,9 @@ class _DrawerCartState extends State<DrawerCart> {
                     Container(
                       margin: const EdgeInsets.only(bottom: 8, top: 15),
                       child: FittedBox(
-                          child: Image.network(
-                              '${Strings.baseUrl}${Strings.imageUrl}/${cartItems[index].product.imagePath}')),
+                        child: Image.network(
+                            '${Strings.baseUrl}${Strings.imageUrl}/${cartItems[index].product.imagePath}'),
+                      ),
                     )
                   ],
                 ),
