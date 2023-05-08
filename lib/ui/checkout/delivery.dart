@@ -12,33 +12,42 @@ class Delivery extends StatefulWidget {
 }
 
 class _DeliveryState extends State<Delivery> {
-  String selectedRadio = 'Extra';
- 
+  String? selectedRadio;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CheckoutBloc, CheckoutState>(
-      builder: (context, state) {
-        if(state is CheckoutLoadedState) {
-          return buildList(deliveryTimes: state.checkoutModel.deliveryTimes);
+    return BlocListener<CheckoutBloc, CheckoutState>(
+      listener: (context, state) {
+        if (state is CheckoutLoadedState) {
+          selectedRadio = state.deliveryTime.title ?? '';
         }
-        return Container();
       },
+      child: BlocBuilder<CheckoutBloc, CheckoutState>(
+        builder: (context, state) {
+          if (state is CheckoutLoadedState) {
+            return buildList(
+                deliveryTimes: state.checkoutModel.deliveryTimes, state: state,);
+          }
+          return Container();
+        },
+      ),
     );
   }
 
-  Widget buildList({required List<DeliveryTime> ? deliveryTimes}) {
+  Widget buildList(
+      {required List<DeliveryTime>? deliveryTimes,
+      required CheckoutLoadedState state}) {
     var list = deliveryTimes ?? [];
     return ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
-        itemCount: list.length ,
+        itemCount: list.length,
         itemBuilder: (BuildContext context, int index) {
-          return expertiseCard(list[index]);
+          return deliveryCard(list[index], state);
         });
   }
 
-  Widget expertiseCard(DeliveryTime deliveryTime) {
+  Widget deliveryCard(DeliveryTime deliveryTime, CheckoutLoadedState state) {
     return Card(
       elevation: 2,
       child: Padding(
@@ -53,13 +62,14 @@ class _DeliveryState extends State<Delivery> {
                 children: [
                   Row(
                     children: [
-                      FittedBox(
+                      Expanded(
                         child: Text(
-                          '${deliveryTime.title }',
+                          '${deliveryTime.title} ${deliveryTime.type} Price: \$${deliveryTime.price}',
                           style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500),
+                            color: Colors.black,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ],
@@ -74,8 +84,19 @@ class _DeliveryState extends State<Delivery> {
                   Radio<String>(
                     value: deliveryTime.title ?? '',
                     groupValue: selectedRadio,
-                    activeColor: Colors.green,
-                    onChanged: (value) {},
+                    activeColor: Colors.black,
+                    onChanged: (value) {
+                      selectedRadio = value;
+                      BlocProvider.of<CheckoutBloc>(context).add(
+                        AddDeliveryTime(
+                          address: state.address,
+                          paymentMethod: state.paymentMethod,
+                          extraCart: state.extras,
+                          deliveryTime: deliveryTime,
+                          checkoutDetailsModel: state.checkoutModel,
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),

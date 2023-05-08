@@ -50,6 +50,7 @@ class DeliveryTime {
     this.title,
     this.time,
     this.type,
+    this.price,
     this.createdAt,
     this.updatedAt,
   });
@@ -58,6 +59,7 @@ class DeliveryTime {
   String? title;
   int? time;
   String? type;
+  int? price;
   DateTime? createdAt;
   DateTime? updatedAt;
 
@@ -66,6 +68,7 @@ class DeliveryTime {
         title: json["title"],
         time: json["time"],
         type: json["type"],
+        price: json["price"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
       );
@@ -75,6 +78,7 @@ class DeliveryTime {
         "title": title,
         "time": time,
         "type": type,
+        "price": price,
         "created_at": createdAt!.toIso8601String(),
         "updated_at": updatedAt!.toIso8601String(),
       };

@@ -124,6 +124,7 @@ class _RecipientDetailsState extends State<RecipientDetails> {
         paymentMethod: state.paymentMethod,
         extraCart: state.extras,
         checkoutDetailsModel: state.checkoutModel,
+        deliveryTime: state.deliveryTime
       ),
     );
   }

@@ -5,6 +5,7 @@ import 'package:booze_flutter/ui/shared/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 
 import '../../bloc/checkout_bloc/checkout_bloc.dart';
 
@@ -17,29 +18,38 @@ class Extras extends StatefulWidget {
 
 class _ExtrasState extends State<Extras> {
   String selectedRadio = 'Extra';
+  final formatCurrency =  NumberFormat.simpleCurrency();
 
   @override
   Widget build(BuildContext context) {
+
+      
     return BlocBuilder<CheckoutBloc, CheckoutState>(
       builder: (context, state) {
         if (state is CheckoutLoadedState) {
           return buildList(
-              extras: state.checkoutModel.extras, extraCart: state.extras);
+            extras: state.checkoutModel.extras,
+            extraCart: state.extras,
+          );
         }
         return Container();
       },
     );
   }
 
-  Widget buildList(
-      {required List<Extra>? extras, required List<ExtrasCart> extraCart}) {
+  Widget buildList({
+    required List<Extra>? extras,
+    required List<ExtrasCart> extraCart,
+  }) {
     var list = extras ?? [];
     return ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         itemCount: list.length,
         itemBuilder: (BuildContext context, int index) {
-          return extrasCard(extra: list[index]);
+          return extrasCard(
+            extra: list[index],
+          );
         });
   }
 
@@ -61,11 +71,12 @@ class _ExtrasState extends State<Extras> {
                   Row(
                     children: [
                       Text(
-                        extra.name ?? '',
+                       '${extra.name} ${formatCurrency.format(extra.price)}',
                         style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500),
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ],
                   ),
@@ -88,12 +99,13 @@ class _ExtrasState extends State<Extras> {
                                 onTap: () {
                                   BlocProvider.of<CheckoutBloc>(context).add(
                                     RemoveExtras(
-                                        address: state.address,
-                                        checkoutDetailsModel:
-                                            state.checkoutModel,
-                                        extra: extra,
-                                        extraCart: state.extras,
-                                        paymentMethod: state.paymentMethod),
+                                      address: state.address,
+                                      checkoutDetailsModel: state.checkoutModel,
+                                      extra: extra,
+                                      extraCart: state.extras,
+                                      paymentMethod: state.paymentMethod,
+                                      deliveryTime: state.deliveryTime,
+                                    ),
                                   );
                                 },
                                 child: Container(
@@ -118,7 +130,7 @@ class _ExtrasState extends State<Extras> {
                             builder: (context, state) {
                               if (state is CheckoutLoadedState) {
                                 return Text(
-                                    '${extraCount(extraId: extra.id, extras: state.extras)}');
+                                    '${extraCount(extraId: extra.id, extras: state.extras)}',);
                               } else {
                                 return Text(
                                   '0',
@@ -135,12 +147,13 @@ class _ExtrasState extends State<Extras> {
                                 onTap: () {
                                   BlocProvider.of<CheckoutBloc>(context).add(
                                     AddExtras(
-                                        address: state.address,
-                                        checkoutDetailsModel:
-                                            state.checkoutModel,
-                                        extra: extra,
-                                        extraCart: state.extras,
-                                        paymentMethod: state.paymentMethod),
+                                      address: state.address,
+                                      checkoutDetailsModel: state.checkoutModel,
+                                      extra: extra,
+                                      extraCart: state.extras,
+                                      paymentMethod: state.paymentMethod,
+                                      deliveryTime: state.deliveryTime,
+                                    ),
                                   );
                                 },
                                 child: Container(
@@ -167,7 +180,10 @@ class _ExtrasState extends State<Extras> {
     );
   }
 
-  int extraCount({required int? extraId, required List<ExtrasCart> extras}) {
+  int extraCount({
+    required int? extraId,
+    required List<ExtrasCart> extras,
+  }) {
     if (extras.isNotEmpty) {
       for (var element in extras) {
         if (element.extra.id == extraId) {

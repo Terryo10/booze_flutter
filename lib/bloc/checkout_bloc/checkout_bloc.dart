@@ -25,10 +25,15 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
             extras: extraCart,
             address: Address(),
             paymentMethod: PaymentMethod(),
+            deliveryTime: DeliveryTime(),
           ),
         );
       }).catchError((error) {
-        emit(CheckoutErrorState(error.toString()));
+        emit(
+          CheckoutErrorState(
+            error.toString(),
+          ),
+        );
       });
     });
 
@@ -49,7 +54,8 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
             checkoutModel: event.checkoutDetailsModel,
             extras: extraCart,
             address: event.address,
-            paymentMethod: event.paymentMethod));
+            paymentMethod: event.paymentMethod,
+            deliveryTime: event.deliveryTime));
       } catch (e) {
         throw "";
       }
@@ -76,7 +82,8 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
               checkoutModel: event.checkoutDetailsModel,
               extras: extraCart,
               address: event.address,
-              paymentMethod: event.paymentMethod));
+              paymentMethod: event.paymentMethod,
+              deliveryTime: event.deliveryTime));
         } catch (e) {
           throw "";
         }
@@ -93,6 +100,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
               extras: event.extraCart,
               address: event.address,
               paymentMethod: PaymentMethod(),
+              deliveryTime: event.deliveryTime,
             ),
           );
         } catch (error) {
@@ -101,7 +109,8 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
       },
     );
 
-    on<AddPaymentMethod>((event, emit) {
+    on<AddPaymentMethod>(
+      (event, emit) {
         emit(CheckoutLoadingState());
         try {
           emit(
@@ -110,12 +119,33 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
               extras: event.extraCart,
               address: event.address,
               paymentMethod: event.paymentMethod,
+              deliveryTime: event.deliveryTime,
             ),
           );
         } catch (error) {
-          emit(CheckoutErrorState(error.toString()));
+          emit(CheckoutErrorState(error.toString(),),);
         }
-      
-    },);
+      },
+    );
+
+
+     on<AddDeliveryTime>(
+      (event, emit) {
+        emit(CheckoutLoadingState());
+        try {
+          emit(
+            CheckoutLoadedState(
+              checkoutModel: event.checkoutDetailsModel,
+              extras: event.extraCart,
+              address: event.address,
+              paymentMethod: event.paymentMethod,
+              deliveryTime: event.deliveryTime,
+            ),
+          );
+        } catch (error) {
+          emit(CheckoutErrorState(error.toString(),),);
+        }
+      },
+    );
   }
 }

@@ -42,9 +42,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             //value is in cart
             String? obj = jsonEncode(storageCartItems);
             storage.write(key: 'cartItems', value: obj);
+            totalPrice = 0;
             for (var element in storageCartItems) {
-              totalPrice =
-                  (element.product.price! * element.quantity);
+             totalPrice += (element.product.price! * element.quantity);
             }
             emit(CartLoadedState(
                 total: double.parse(totalPrice.toString()),
@@ -55,9 +55,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
             String? obj = jsonEncode(storageCartItems);
             storage.write(key: 'cartItems', value: obj);
+            totalPrice = 0;
             for (var element in storageCartItems) {
-              totalPrice =
-                  (element.product.price! * element.quantity);
+             totalPrice += (element.product.price! * element.quantity);
             }
             emit(CartLoadedState(
                 total: double.parse(totalPrice.toString()),
@@ -75,8 +75,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         //value is in cart
         String? obj = jsonEncode(storageCartItems);
         storage.write(key: 'cartItems', value: obj);
+        totalPrice = 0;
         for (var element in storageCartItems) {
-          totalPrice = (element.product.price! * element.quantity);
+          totalPrice += (element.product.price! * element.quantity);
         }
         emit(CartLoadedState(
             total: double.parse(totalPrice.toString()),
@@ -111,8 +112,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
               value.quantity = value.quantity - 1;
               String? obj = jsonEncode(storageCartItems);
               storage.write(key: 'cartItems', value: obj);
+              totalPrice = 0;
               for (var element in storageCartItems) {
-                totalPrice = (element.product.price! * element.quantity);
+                totalPrice += (element.product.price! * element.quantity);
               }
               emit(CartLoadedState(
                   total: double.parse(totalPrice.toString()),
@@ -156,8 +158,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
                   product: Product.fromJson(element["product"]),
                   quantity: element["quantity"]));
             }
+            totalPrice = 0;
             for (var element in storageCartItems) {
-              totalPrice = (element.product.price! * element.quantity);
+              totalPrice += (element.product.price! * element.quantity);
             }
             emit(CartLoadedState(
                 total: double.parse(totalPrice.toString()),
@@ -169,8 +172,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             }
           }
         } else {
+          totalPrice = 0;
           for (var element in storageCartItems) {
-            totalPrice = (element.product.price! * element.quantity);
+            totalPrice += (element.product.price! * element.quantity);
           }
           emit(CartLoadedState(
               total: double.parse(totalPrice.toString()),
@@ -205,8 +209,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             String? obj = jsonEncode(storageCartItems);
             storage.write(key: 'cartItems', value: obj);
           }
+          totalPrice = 0;
           for (var element in storageCartItems) {
-            totalPrice = (element.product.price! * element.quantity);
+            totalPrice += (element.product.price! * element.quantity);
           }
 
           emit(CartLoadedState(
@@ -219,8 +224,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           }
         }
       } else {
+        totalPrice = 0;
         for (var element in storageCartItems) {
-          totalPrice = (element.product.price! * element.quantity);
+          totalPrice += (element.product.price! * element.quantity);
         }
         emit(CartLoadedState(
             total: double.parse(totalPrice.toString()),

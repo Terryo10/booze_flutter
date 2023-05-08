@@ -40,17 +40,22 @@ class _PaymentsState extends State<Payments> {
       required CheckoutLoadedState checkoutLoadedState}) {
     var list = paymentMethods ?? [];
     return ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: list.length,
-        itemBuilder: (BuildContext context, int index) {
-          return paymentsCard(list[index],
-              checkoutLoadedState: checkoutLoadedState);
-        });
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      itemCount: list.length,
+      itemBuilder: (BuildContext context, int index) {
+        return paymentsCard(
+          list[index],
+          checkoutLoadedState: checkoutLoadedState,
+        );
+      },
+    );
   }
 
-  Widget paymentsCard(PaymentMethod paymentMethod,
-      {required CheckoutLoadedState checkoutLoadedState}) {
+  Widget paymentsCard(
+    PaymentMethod paymentMethod, {
+    required CheckoutLoadedState checkoutLoadedState,
+  }) {
     return Card(
       elevation: 2,
       child: Padding(
@@ -68,9 +73,10 @@ class _PaymentsState extends State<Payments> {
                       Text(
                         paymentMethod.name ?? '',
                         style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500),
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ],
                   ),
@@ -88,12 +94,15 @@ class _PaymentsState extends State<Payments> {
                     onChanged: (value) {
                       //add to bloc
                       BlocProvider.of<CheckoutBloc>(context).add(
-                          AddPaymentMethod(
-                              address: checkoutLoadedState.address,
-                              paymentMethod: paymentMethod,
-                              extraCart: checkoutLoadedState.extras,
-                              checkoutDetailsModel:
-                                  checkoutLoadedState.checkoutModel));
+                        AddPaymentMethod(
+                          address: checkoutLoadedState.address,
+                          paymentMethod: paymentMethod,
+                          extraCart: checkoutLoadedState.extras,
+                          checkoutDetailsModel:
+                              checkoutLoadedState.checkoutModel,
+                          deliveryTime: checkoutLoadedState.deliveryTime,
+                        ),
+                      );
                     },
                   ),
                 ],

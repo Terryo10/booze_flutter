@@ -177,7 +177,7 @@ class _CheckoutState extends State<Checkout> {
       if(state.paymentMethod.id !=  null){
         setState(() {
         currentStep += 1;
-      });
+      },);
       }else{
          ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -189,6 +189,21 @@ class _CheckoutState extends State<Checkout> {
         );
       }
 
+    }else if(currentStep == 3){
+      if(state.deliveryTime.id != null){
+         setState(() {
+        currentStep += 1;
+      },);
+      }else{
+          ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Please Select Select Delivery Time ',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
     } else {
       setState(() {
         currentStep += 1;
